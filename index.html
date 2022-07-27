@@ -1,1 +1,172 @@
-<h1>Test
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ziyad's Profile</title>
+    <link rel="icon" href="https://raw.githubusercontent.com/mziyadam/Beranda/master/profildiri.ico">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+</head>
+<style>
+    .text-justify{
+        text-align:justify
+    }
+</style>
+<script src="https://unpkg.com/vue@3.1.1/dist/vue.global.prod.js"></script>
+<!--https://colorhunt.co/palette/f9f3dfcdf2caffdefaffc898-->
+<div id="app">
+    <!-- <div :style="{ color: activeColor, fontSize: fontSize + 'px' }">{{ message }}</div>
+    <div class="row">
+        <div class="col-md-3">{{ message }}</div>
+        <div class="col-md-3">{{ message }}</div>
+        <div class="col-md-3">{{ message }}</div>
+        <div class="col-md-3">{{ message }}</div>
+    </div> -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">{{profile.username}}</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a @click="type='Home'" :class="['nav-link',type==='Home'? 'active':'']" aria-current="page"
+                            href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a @click="type='About'" :class="['nav-link',type==='About'? 'active':'']" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a @click="type='Projects'" :class="['nav-link',type==='Projects'? 'active':'']"
+                            href="#">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a @click="type='Other'" :class="['nav-link',type==='Other'? 'active':'']" href="#">Other</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <div class="container text-center align-middle pt-3">
+        <div class="" v-if="type === 'Home'">
+            <img src="me.png" alt="my photo" class="rounded-circle border border-info w-25 m-3" srcset="">
+            <h1>I'm {{profile.name}}</h1>
+            <p>{{profile.bio}}</p>
+            <hr>
+            <h3>Areas of Interest</h3>
+            <p>Take a look at some of the things I'm interested in</p>
+            <div class="row">
+                <div class="col-md-3" v-for="item in areasOfInterest">
+                    <img class="w-50 p-4" v-bind:src="'icon/'+item.icon" alt="">
+                    <h5>{{item.name}}</h5>
+                </div>
+            </div>
+        </div>
+        <div v-else-if="type === 'About'">
+            <h1>About</h1>
+            <hr>
+            <div class="row">
+                <div class="col-md-3">
+                    <img src="me.png" alt="my photo" class="rounded-circle border border-info w-75 m-3" srcset="">
+                </div>
+                <div class="col-md-9 d-flex align-items-center">
+                    <div class="text-justify">
+                        <h2>My name is {{profile.name}}</h2>
+                        <p>People usually call me Ziyad. I'm a passionate, adaptive, and hard-working person. Interested in Mobile Development, and other technologies such as Web Development. Had been building and working with personal projects to learn many things.</p>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <h3>Education</h3>
+            <div class="row">
+                <div v-for="item in profile.educations">
+                    <img class="w-25 p-4" v-bind:src="'icon/'+item.icon" alt="">
+                    <h5>{{item.name}}</h5>
+                    <p>{{item.description}}</p>
+                </div>
+            </div>
+            <hr>
+            <h3>Some of the unique things about me</h3>
+            <p class="text-justify">{{profile.aboutMe}}</p>
+        </div>
+        <div v-else-if="type === 'Projects'">
+            <h1>Project</h1>
+            <hr>
+        </div>
+        <div v-else>
+            <h1>Other</h1>
+            <hr>
+        </div>
+    </div>
+</div>
+
+<script>
+    const { createApp } = Vue
+
+    createApp({
+        data() {
+            return {
+                type: 'Home',
+                activeColor: 'red',
+                fontSize: 30,
+                message: 'Hello Vue!',
+                profile: {
+                    username: '\@mziyadam',
+                    name: 'Muhammad Ziyad Al Maududi',
+                    bio: "Studious and innovative programmer. Interested in complex problems. Highly-inducive in analyzing things.",
+                    phoneNumber: '+6285889168150',
+                    email: 'mziyad195@gmail.com',
+                    educations: [
+                        {
+                            name: 'Universitas Brawijaya',
+                            description:"I'am an Undergraduate Informatics Engineering Student at Universitas Brawijaya Malang, with GPA 3.90/4.00 in 5th Semester.",
+                            icon: 'universitas-brawijaya.png',
+                        },
+                        {
+                            name: 'Bangkit Academy 2022',
+                            description:"Bangkit is a unique career readiness program in technology led by Google. I'am a one of few distinction graduates of the mobile development learning path.",
+                            icon: 'bangkit-academy.jpg',
+                        }
+                    ],
+                    githubUrl: 'https://github.com/mziyadam',
+                    linkedinUrl: 'https://www.linkedin.com/in/mziyadam',
+                    aboutMe: "I am interested in many things than programming, such as traveling, sports, music, watching movies and games! I like basketball, jogging, badminton, and martial arts. I usually do sports such as basketball, jogging, or badminton if someone invites me hehe. It's a really fun sport for me! I also love music, especially pop, hip-hop and classical genres. However, what I like the most is the troubled song, because love songs are for losers, said Lola Coca. I love watching movies, especially action and marvel movies. I like to play games too during my relaxation time. I love playing strategy games and MOBAs. I play games only when I need to refresh my brain after a long day!",
+                },
+                areasOfInterest: [
+                    {
+                        name: 'Mobile Apps Development',
+                        icon: 'android-development.png',
+                    },
+                    {
+                        name: 'Website Development',
+                        icon: 'website-development.png',
+                    },
+                    {
+                        name: 'Game Development',
+                        icon: 'game-development.png',
+                    },
+                    {
+                        name: 'Video Editing',
+                        icon: 'video-editing.png',
+                    },
+                ],
+                copyrightText: 'Muhammad Ziyad Al Maududi - 2022',
+            }
+        }
+    }).mount('#app')
+</script>
+
+</html>
