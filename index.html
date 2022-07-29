@@ -12,10 +12,29 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
         crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 </head>
 <style>
-    .text-justify{
-        text-align:justify
+    .text-justify {
+        text-align: justify
+    }
+
+    .slide-fade-enter-active {
+        transition: all 0.1s ease-out;
+    }
+
+    .slide-fade-leave-active {
+        transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);
+    }
+
+    ul {
+        list-style-type: square;
+    }
+
+    .slide-fade-enter-from,
+    .slide-fade-leave-to {
+        transform: translateY(20px);
+        opacity: 0;
     }
 </style>
 <script src="https://unpkg.com/vue@3.1.1/dist/vue.global.prod.js"></script>
@@ -30,7 +49,7 @@
     </div> -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">{{profile.username}}</a>
+            <a class="navbar-brand" href="#"><b>{{profile.username}}</b></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -50,7 +69,20 @@
                             href="#">Projects</a>
                     </li>
                     <li class="nav-item">
-                        <a @click="type='Other'" :class="['nav-link',type==='Other'? 'active':'']" href="#">Other</a>
+                        <a @click="type='Contact'" :class="['nav-link',type==='Contact'? 'active':'']"
+                            href="#">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" target="_blank" :href="''+profile.linkedinUrl"><i
+                                class="bi bi-linkedin"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" target="_blank" :href="''+profile.githubUrl"><i
+                                class="bi bi-github"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" target="_blank" :href="''+profile.mediumUrl"><i
+                                class="bi bi-medium"></i></a>
                     </li>
                 </ul>
                 <form class="d-flex">
@@ -60,60 +92,125 @@
             </div>
         </div>
     </nav>
-    <div class="container text-center align-middle pt-3">
-        <div class="" v-if="type === 'Home'">
-            <img src="me.png" alt="my photo" class="rounded-circle border border-info w-25 m-3" srcset="">
-            <h1>I'm {{profile.name}}</h1>
-            <p>{{profile.bio}}</p>
-            <hr>
-            <h3>Areas of Interest</h3>
-            <p>Take a look at some of the things I'm interested in</p>
-            <div class="row">
-                <div class="col-md-3" v-for="item in areasOfInterest">
-                    <img class="w-50 p-4" v-bind:src="'icon/'+item.icon" alt="">
-                    <h5>{{item.name}}</h5>
-                </div>
-            </div>
-        </div>
-        <div v-else-if="type === 'About'">
-            <h1>About</h1>
-            <hr>
-            <div class="row">
-                <div class="col-md-3">
-                    <img src="me.png" alt="my photo" class="rounded-circle border border-info w-75 m-3" srcset="">
-                </div>
-                <div class="col-md-9 d-flex align-items-center">
-                    <div class="text-justify">
-                        <h2>My name is {{profile.name}}</h2>
-                        <p>People usually call me Ziyad. I'm a passionate, adaptive, and hard-working person. Interested in Mobile Development, and other technologies such as Web Development. Had been building and working with personal projects to learn many things.</p>
+    <div class="container text-center align-middle pt-3 pb-3">
+        <Transition name="slide-fade">
+            <div class="" v-if="type === 'Home'">
+                <img src="me.png" alt="my photo" class="rounded-circle border border-info w-25 m-3" srcset="">
+                <h1>I'm {{profile.name}}</h1>
+                <p>{{profile.bio}}</p>
+                <hr>
+                <h3>Areas of Interest</h3>
+                <p>Take a look at some of the things I'm interested in</p>
+                <div class="row">
+                    <div class="col-md-3" v-for="item in areasOfInterest">
+                        <img class="w-50 p-4" v-bind:src="'icon/'+item.icon" alt="">
+                        <h5>{{item.name}}</h5>
                     </div>
                 </div>
             </div>
-            <hr>
-            <h3>Education</h3>
-            <div class="row">
-                <div v-for="item in profile.educations">
-                    <img class="w-25 p-4" v-bind:src="'icon/'+item.icon" alt="">
-                    <h5>{{item.name}}</h5>
-                    <p>{{item.description}}</p>
+            <div v-else-if="type === 'About'">
+                <h1>About</h1>
+                <hr>
+                <div class="row">
+                    <div class="col-md-3">
+                        <img src="me.png" alt="my photo" class="rounded-circle border border-info w-75 m-3" srcset="">
+                    </div>
+                    <div class="col-md-9 d-flex align-items-center">
+                        <div class="text-justify">
+                            <h2>My name is {{profile.name}}</h2>
+                            <p>People usually call me Ziyad. I'm a passionate, adaptive, and hard-working person.
+                                Interested
+                                in Mobile Development, and Contact technologies such as Web Development. Had been
+                                building
+                                and working with personal projects to learn many things.</p>
+                        </div>
+                    </div>
                 </div>
+                <hr>
+                <h3>Education</h3>
+                <div class="row">
+                    <div v-for="item in profile.educations">
+                        <img class="w-25 p-4" v-bind:src="'icon/'+item.icon" alt="">
+                        <h5>{{item.name}}</h5>
+                        <p>{{item.description}}</p>
+                    </div>
+                </div>
+                <hr>
+                <h3>Some of the unique things about me</h3>
+                <p class="text-justify">{{profile.aboutMe}}</p>
             </div>
-            <hr>
-            <h3>Some of the unique things about me</h3>
-            <p class="text-justify">{{profile.aboutMe}}</p>
-        </div>
-        <div v-else-if="type === 'Projects'">
-            <h1>Project</h1>
-            <hr>
-        </div>
-        <div v-else>
-            <h1>Other</h1>
-            <hr>
-        </div>
+            <div v-else-if="type === 'Projects'">
+                <h1>Projects</h1>
+                <div class="row" v-for="project in projects">
+                    <hr>
+                    <div class="col-md-6">
+                        <div class=" mt-3 ms-5">
+                            <div :id="'carouselExampleDark'+project.id" class="carousel carousel-dark slide"
+                                data-bs-ride="carousel">
+                                <div class="carousel-indicators">
+                                    <button type="button" v-for="image in project.images"
+                                        @click="project.selectedImage=image.id"
+                                        :data-bs-target="'#carouselExampleDark'+project.id"
+                                        :data-bs-slide-to="''+image.id"
+                                        :class="[project.selectedImage===image.id? 'active':'']" aria-current="true"
+                                        :aria-label="'Slide'+ (image.id+1)"
+                                        style="position: relative; bottom: -50px;"></button>
+                                </div>
+                                <div class="carousel-inner ">
+                                    <div :class="['carousel-item', project.selectedImage===image.id? 'active':'']"
+                                        v-for="image in project.images" data-bs-interval="10000">
+                                        <img :src="''+image.imageUrl" class="d-block img-fluid m-auto"
+                                            style="max-height: 360px;" alt="...">
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev" type="button"
+                                    :data-bs-target="'#carouselExampleDark'+project.id" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button"
+                                    :data-bs-target="'#carouselExampleDark'+project.id" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                            <br>
+                            <a :href="''+project.url" style="text-decoration: none;">
+                                <button type="button" class="mt-3 mb-3 btn btn-info active" style="width: 100%">
+                                    {{project.name}}
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-start">
+                        <h4 class="text-center">
+                            {{project.title}}
+                        </h4>
+                        <br>
+                        <p><b>Role: </b>{{project.role}}</p>
+                        <b>Tasks:</b>
+                        <ul>
+                            <li v-for="task in project.tasks">{{task}}</li>
+                        </ul>
+                    </div>
+                </div>
+                <hr>
+                <a :href="''+profile.githubUrl" style="text-decoration: none;">
+                    <button type="button" class="mt-3 mb-3 btn btn-info active" style="width: 100%">
+                        See also my Github profile here
+                    </button>
+                </a>
+            </div>
+            <div v-else>
+                <h1>Contact</h1>
+                <hr>
+            </div>
+        </Transition>
     </div>
 </div>
 
 <script>
+
     const { createApp } = Vue
 
     createApp({
@@ -132,18 +229,19 @@
                     educations: [
                         {
                             name: 'Universitas Brawijaya',
-                            description:"I'am an Undergraduate Informatics Engineering Student at Universitas Brawijaya Malang, with GPA 3.90/4.00 in 5th Semester.",
+                            description: "I'am an Undergraduate Informatics Engineering Student at Universitas Brawijaya Malang. focuses on the specialization of Media, Game and Mobile Technology.",
                             icon: 'universitas-brawijaya.png',
                         },
                         {
                             name: 'Bangkit Academy 2022',
-                            description:"Bangkit is a unique career readiness program in technology led by Google. I'am a one of few distinction graduates of the mobile development learning path.",
+                            description: "Bangkit is a unique career readiness program in technology led by Google. I'am a one of few distinction graduates of the mobile development learning path.",
                             icon: 'bangkit-academy.jpg',
                         }
                     ],
                     githubUrl: 'https://github.com/mziyadam',
                     linkedinUrl: 'https://www.linkedin.com/in/mziyadam',
-                    aboutMe: "I am interested in many things than programming, such as traveling, sports, music, watching movies and games! I like basketball, jogging, badminton, and martial arts. I usually do sports such as basketball, jogging, or badminton if someone invites me hehe. It's a really fun sport for me! I also love music, especially pop, hip-hop and classical genres. However, what I like the most is the troubled song, because love songs are for losers, said Lola Coca. I love watching movies, especially action and marvel movies. I like to play games too during my relaxation time. I love playing strategy games and MOBAs. I play games only when I need to refresh my brain after a long day!",
+                    mediumUrl: 'https://mziyadam.medium.com/',
+                    aboutMe: "I am also interested in many things than programming, such as traveling, sports, music, watching movies, and games! I like basketball, jogging, badminton, and martial arts. I usually do sports such as basketball, jogging, or badminton if someone invites me hehe. It's an enjoyable sport for me! I also love music, especially pop, hip-hop and classical genres. However, I like the sad songs most, because love songs are for losers, said Lola Coca. I love watching movies, especially action and marvel movies. I want to play games too during my relaxation time. I love playing strategy games and MOBAs. I play games only when I need to refresh my brain after a long day!",
                 },
                 areasOfInterest: [
                     {
@@ -161,6 +259,234 @@
                     {
                         name: 'Video Editing',
                         icon: 'video-editing.png',
+                    },
+                ],
+                projects: [
+                    {
+                        id: 0,
+                        title: 'An MVVM android application that provides educational features such as writing, reading, and counting',
+                        role: 'Mobile Developer',
+                        tasks: [
+                            'Created and developed using following languages and technologies: Kotlin, REST API, LiveData, ViewModel, ViewBinding, Retrofit, GSON, OkHttp3, Glide, TextToSpeech, and AndroidDraw.',
+                            'Developed by three roles, consisting of the Mobile Development, Cloud Computing, and Machine Learning.'
+                        ],
+                        images: [
+                            {
+                                id: 0,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/173225281-2d5faedb-905a-48cf-b62b-ca8d99a5985a.png'
+                            },
+                            {
+                                id: 1,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/173225285-355623d8-69ca-4918-9857-34adb12de9be.png'
+                            },
+                            {
+                                id: 2,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/173225286-9a3c72e9-843f-4f95-9ddc-f5f81fce758b.png'
+                            },
+                            {
+                                id: 3,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/173225292-e3cb07c8-97fa-4f46-b943-22ead0d1e890.png'
+                            },
+                            {
+                                id: 4,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/173225296-12bb3f8a-52db-48e1-a522-c10c0a61760d.png'
+                            },
+                            {
+                                id: 5,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/173225298-71edcf5a-8628-46a8-8f29-de0a1f70765c.png'
+                            },
+                            {
+                                id: 6,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/173225308-17878f81-03c4-4c9e-840c-d25321319a31.png'
+                            }
+                        ],
+                        selectedImage: 0,
+                        name: 'Calistung',
+                        url: 'https://github.com/Chino-ai/Calistung',
+                    },
+                    {
+                        id: 1,
+                        title: 'A Clean Architecture android application for listening radio',
+                        role: 'Mobile Developer',
+                        tasks: [
+                            'Created and developed using following languages and technologies: Kotlin, LiveData, ViewModel, Room, ViewBinding, Koin, Glide, Coroutines, Retrofit, GSON, OkHttp3, and ExoPlayer.',
+                            'Provides additional features such as favorite, and player notification.'
+                        ],
+                        images: [
+                            {
+                                id: 0,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/179384289-c37cf63c-db33-4c91-a530-a2931b04ac36.jpeg'
+                            },
+                            {
+                                id: 1,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/179384293-878108fd-9140-41a3-8304-ad4bd73a54c0.jpeg'
+                            },
+                            {
+                                id: 2,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/179384294-11f28c79-13b1-4db5-ad5e-93ce8dfaecf0.jpeg'
+                            },
+                            {
+                                id: 3,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/179384298-b7bfdd69-d641-44a8-bd2d-b6d5b605ce70.jpeg'
+                            },
+                            {
+                                id: 4,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/179384299-2b77ff2f-aac5-4470-828e-6566d8b078d3.jpeg'
+                            }
+                        ],
+                        selectedImage: 0,
+                        name: 'Zradio',
+                        url: 'https://github.com/mziyadam/ZRadio',
+                    },
+                    {
+                        id: 2,
+                        title: 'A Simple android application to record expenses and income',
+                        role: 'Mobile Developer',
+                        tasks: [
+                            'Created and developed using following languages and technologies: Kotlin, LiveData, ViewModel, ViewBinding, FirebaseUI, Firebase Authentication, and Firestore Database.',
+                            'Provides financial recording features such as adding expenses and income, editing, deleting, and filtering.'
+                        ],
+                        images: [
+                            {
+                                id: 0,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/179383507-83a949e0-c8bb-4e52-9712-b7bb539fa9b1.jpeg'
+                            },
+                            {
+                                id: 1,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/179383270-ed5d395d-e321-468d-95e8-d5dfb3175298.jpeg'
+                            },
+                            {
+                                id: 2,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/179383247-a09a8ca5-12e1-443e-9573-62be51945fe1.jpeg'
+                            },
+                            {
+                                id: 3,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/179383308-b8810e88-e250-44e1-b588-552dcc13797a.jpeg'
+                            },
+                            {
+                                id: 4,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/179383319-47fe833d-7daf-49ae-8521-13be0efa6989.jpeg'
+                            }
+                        ],
+                        selectedImage: 0,
+                        name: 'Pencatat Uang',
+                        url: 'https://github.com/mziyadam/Pencatat-Uang',
+                    },
+                    {
+                        id: 3,
+                        title: 'An MVVM android application that provides venture features such as discussion, introduction generator, and motivation',
+                        role: 'Mobile Developer',
+                        tasks: [
+                            'Created and developed using following languages and technologies: Kotlin, LiveData, ViewModel, ViewBinding, FirebaseUI, Firebase Authentication, Firebase Storage, and Firestore Database.',
+                            'Developed to make a realtime chat disscussion using Firebase.'
+                        ],
+                        images: [
+                            {
+                                id: 0,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/179279253-a93f95f0-91b0-465a-ad3a-14855bbb0832.png'
+                            },
+                            {
+                                id: 1,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/179279845-15f2c5e9-5208-42ac-9b21-c7b589e84764.png'
+                            },
+                            {
+                                id: 2,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/179279920-9f88b4ae-6ec9-43d3-8eed-f70334eada96.png'
+                            },
+                            {
+                                id: 3,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/179280093-b58ad7da-23c7-4293-87c1-1eac2164caa2.png'
+                            },
+                            {
+                                id: 4,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/179280218-81f627cc-915b-44d3-bfd0-ca39b4331ecc.png'
+                            }
+                        ],
+                        selectedImage: 0,
+                        name: 'Work Bucket',
+                        url: 'https://github.com/mziyadam/workbucket-psi/',
+                    },
+                    {
+                        id: 4,
+                        title: 'A Flutter news application with categories selector',
+                        role: 'Mobile Developer',
+                        tasks: [
+                            'Created and developed using following languages and technologies: Flutter, Dart, REST API, WebView, and HTTP.',
+                            'Developed to make a news reader application separated by category.'
+                        ],
+                        images: [
+                            {
+                                id: 0,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/179284046-610bba2a-f74a-4a58-8f82-834b2c351ffd.png'
+                            },
+                            {
+                                id: 1,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/179284077-cfe97702-55b3-4bc1-9b1b-fa25159f0a75.png'
+                            },
+                            {
+                                id: 2,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/179284150-d06f2d15-4d50-46ff-8544-ea5567cd251f.png'
+                            },
+                            {
+                                id: 3,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/179284172-6801d631-536c-4422-8981-545b1258932a.png'
+                            }
+                        ],
+                        selectedImage: 0,
+                        name: 'Znews',
+                        url: 'https://github.com/mziyadam/znews/',
+                    },
+                    {
+                        id: 5,
+                        title: 'A Simple Spaceship Game to Avoid Meteors and Planets',
+                        role: 'Game Developer',
+                        tasks: [
+                            'Created and developed using following languages and technologies: C++, and OpenGL.',
+                            'Developed to make a 2D OpenGL game with animation, music, and SFX.'
+                        ],
+                        images: [
+                            {
+                                id: 0,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/181680378-8b3e6199-b967-4ff9-b951-42a756ece4e4.png'
+                            },
+                            {
+                                id: 1,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/181680400-b53c9938-7ee9-49cc-8ec6-402bac49bd55.png'
+                            },
+                            {
+                                id: 2,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/181680418-3250f8c3-7c86-4822-85c5-17b0bb09282e.png'
+                            }
+                        ],
+                        selectedImage: 0,
+                        name: 'SpaceCop Adventure',
+                        url: 'https://github.com/mziyadam/SpaceCop-Adventure/',
+                    },
+                    {
+                        id: 6,
+                        title: 'Faculty of Economics the State University of Malang Education Service Website',
+                        role: 'Web Developer',
+                        tasks: [
+                            'Created and developed using following languages and technologies: HTML, CSS, Javascript, Bootstrap, PHP, MySql, and Laravel.',
+                            'Developed to make a website-based application to assist the Faculty of Economics, the State University of Malang in providing technology-based services'
+                        ],
+                        images: [
+                            {
+                                id: 0,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/181682676-6245ca20-109c-40d9-bbb7-6396bd36dd6a.png'
+                            },
+                            {
+                                id: 1,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/181682848-c89e93de-f3ec-4f03-8cc4-8dbd01e3e69e.png'
+                            },
+                            {
+                                id: 2,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/181682719-53ff7e8e-7e45-4a59-b02c-3199efab7410.png'
+                            }
+                        ],
+                        selectedImage: 0,
+                        name: 'Rumah Jawara Kampus Merdeka EKP Innovation Center (Jaka Kece)',
+                        url: 'http://jakakece.ekp.fe.um.ac.id/home',
                     },
                 ],
                 copyrightText: 'Muhammad Ziyad Al Maududi - 2022',
