@@ -19,6 +19,22 @@
         text-align: justify
     }
 
+    .limit-logo-size {
+        max-height: 120px;
+    }
+
+    .limit-logo-size-bigger {
+        max-height: 240px;
+    }
+
+    .black {
+        color: black;
+    }
+
+    .decor-none {
+        text-decoration: none;
+    }
+
     .slide-fade-enter-active {
         transition: all 0.1s ease-out;
     }
@@ -40,13 +56,6 @@
 <script src="https://unpkg.com/vue@3.1.1/dist/vue.global.prod.js"></script>
 <!--https://colorhunt.co/palette/f9f3dfcdf2caffdefaffc898-->
 <div id="app">
-    <!-- <div :style="{ color: activeColor, fontSize: fontSize + 'px' }">{{ message }}</div>
-    <div class="row">
-        <div class="col-md-3">{{ message }}</div>
-        <div class="col-md-3">{{ message }}</div>
-        <div class="col-md-3">{{ message }}</div>
-        <div class="col-md-3">{{ message }}</div>
-    </div> -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#"><b>{{profile.username}}</b></a>
@@ -85,10 +94,10 @@
                                 class="bi bi-medium"></i></a>
                     </li>
                 </ul>
-                <form class="d-flex">
+                <!-- <form class="d-flex">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+                </form> -->
             </div>
         </div>
     </nav>
@@ -103,7 +112,7 @@
                 <p>Take a look at some of the things I'm interested in</p>
                 <div class="row">
                     <div class="col-md-3" v-for="item in areasOfInterest">
-                        <img class="w-50 p-4" v-bind:src="'icon/'+item.icon" alt="">
+                        <img class="img-fluid limit-logo-size p-4" v-bind:src="'icon/'+item.icon" alt="">
                         <h5>{{item.name}}</h5>
                     </div>
                 </div>
@@ -120,9 +129,10 @@
                             <h2>My name is {{profile.name}}</h2>
                             <p>People usually call me Ziyad. I'm a passionate, adaptive, and hard-working person.
                                 Interested
-                                in Mobile Development, and Contact technologies such as Web Development. Had been
+                                in Mobile Development, and other technologies such as Web Development. Had been
                                 building
-                                and working with personal projects to learn many things.</p>
+                                and working with personal projects to learn many things.
+                                A Google Certified Associate Android Developer.</p>
                         </div>
                     </div>
                 </div>
@@ -130,7 +140,7 @@
                 <h3>Education</h3>
                 <div class="row">
                     <div v-for="item in profile.educations">
-                        <img class="w-25 p-4" v-bind:src="'icon/'+item.icon" alt="">
+                        <img class="img-fluid limit-logo-size-bigger p-4" v-bind:src="'icon/'+item.icon" alt="">
                         <h5>{{item.name}}</h5>
                         <p>{{item.description}}</p>
                     </div>
@@ -175,7 +185,7 @@
                                 </button>
                             </div>
                             <br>
-                            <a :href="''+project.url" style="text-decoration: none;">
+                            <a :href="''+project.url" class="decor-none black">
                                 <button type="button" class="mt-3 mb-3 btn btn-info active" style="width: 100%">
                                     {{project.name}}
                                 </button>
@@ -195,7 +205,7 @@
                     </div>
                 </div>
                 <hr>
-                <a :href="''+profile.githubUrl" style="text-decoration: none;">
+                <a :href="''+profile.githubUrl" class="decor-none">
                     <button type="button" class="mt-3 mb-3 btn btn-info active" style="width: 100%">
                         See also my Github profile here
                     </button>
@@ -204,8 +214,65 @@
             <div v-else>
                 <h1>Contact</h1>
                 <hr>
+                <div class="row text-start">
+                    <div class="col-md-8">
+                        <h5>I'd <b>love</b> to hear from you.</h5>
+                        <form action="mailto:mziyad195@gmail.com" method="post" enctype="text/plain">
+                            <div class="row">
+                                <div class="col">
+                                    <label for="inputName">Name</label>
+                                    <input id="inputName" name="name" type="text" class="form-control"
+                                        placeholder="Your name">
+                                </div>
+                                <div class="col">
+                                    <label for="inputEmail">Email address</label>
+                                    <input id="inputEmail" name="email" type="email" class="form-control"
+                                        placeholder="Your email">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputSubject">Subject</label>
+                                <input id="inputSubject" name="subject" type="text" class="form-control"
+                                    placeholder="Your subject">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputMessage">Message</label>
+                                <textarea rows="6" name="message" id="inputMessage" type="text" class="form-control"
+                                    placeholder="Your Message"></textarea>
+                            </div>
+                            <br>
+                            <button type="submit" class="btn btn-info">Send</button>
+                        </form>
+                        <br>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Email</h6>
+                        <p><a class="decor-none" href="mailto:mziyad195@gmail.com">mziyad195@gmail.com</a></p>
+                        <hr>
+                        <h6>Phone</h6>
+                        <p><a class="decor-none" href="tel:+1123-456-7890">+6285889168150</a></p>
+                        <hr>
+                        <h6>Connect</h6>
+                        <a class="decor-none" target="_blank" :href="''+profile.linkedinUrl"><i
+                                class="bi bi-linkedin"></i>Linkedin</a><br>
+                        <a class="decor-none" target="_blank" :href="''+profile.githubUrl"><i
+                                class="bi bi-github"></i>Github</a><br>
+                        <a class="decor-none" target="_blank" :href="''+profile.mediumUrl"><i
+                                class="bi bi-medium"></i>Medium</a>
+
+                        <hr>
+                    </div>
+                </div>
+
             </div>
         </Transition>
+    </div>
+    <div class="container">
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+            <div class="col-md-4 d-flex align-items-center">
+                <span class="text-muted">{{copyrightText}}</span>
+            </div>
+        </footer>
     </div>
 </div>
 
@@ -264,7 +331,7 @@
                 projects: [
                     {
                         id: 0,
-                        title: 'An MVVM android application that provides educational features such as writing, reading, and counting',
+                        title: 'An Educational MVVM Android Application to Read, Write, and Count',
                         role: 'Mobile Developer',
                         tasks: [
                             'Created and developed using following languages and technologies: Kotlin, REST API, LiveData, ViewModel, ViewBinding, Retrofit, GSON, OkHttp3, Glide, TextToSpeech, and AndroidDraw.',
@@ -306,7 +373,7 @@
                     },
                     {
                         id: 1,
-                        title: 'A Clean Architecture android application for listening radio',
+                        title: 'A Clean Architecture Android Application for Listening Radio',
                         role: 'Mobile Developer',
                         tasks: [
                             'Created and developed using following languages and technologies: Kotlin, LiveData, ViewModel, Room, ViewBinding, Koin, Glide, Coroutines, Retrofit, GSON, OkHttp3, and ExoPlayer.',
@@ -340,7 +407,7 @@
                     },
                     {
                         id: 2,
-                        title: 'A Simple android application to record expenses and income',
+                        title: 'A Simple Android Application to Record Expenses and Income',
                         role: 'Mobile Developer',
                         tasks: [
                             'Created and developed using following languages and technologies: Kotlin, LiveData, ViewModel, ViewBinding, FirebaseUI, Firebase Authentication, and Firestore Database.',
@@ -374,9 +441,10 @@
                     },
                     {
                         id: 3,
-                        title: 'An MVVM android application that provides venture features such as discussion, introduction generator, and motivation',
+                        title: 'An MVVM Venture Android Application',
                         role: 'Mobile Developer',
                         tasks: [
+                            'Provides venture features such as discussion, introduction generator, and motivation',
                             'Created and developed using following languages and technologies: Kotlin, LiveData, ViewModel, ViewBinding, FirebaseUI, Firebase Authentication, Firebase Storage, and Firestore Database.',
                             'Developed to make a realtime chat disscussion using Firebase.'
                         ],
@@ -408,7 +476,7 @@
                     },
                     {
                         id: 4,
-                        title: 'A Flutter news application with categories selector',
+                        title: 'A Flutter News Application with Categories Selector',
                         role: 'Mobile Developer',
                         tasks: [
                             'Created and developed using following languages and technologies: Flutter, Dart, REST API, WebView, and HTTP.',
@@ -487,6 +555,40 @@
                         selectedImage: 0,
                         name: 'Rumah Jawara Kampus Merdeka EKP Innovation Center (Jaka Kece)',
                         url: 'http://jakakece.ekp.fe.um.ac.id/home',
+                    },
+                    {
+                        id: 7,
+                        title: 'Cost Booking Website',
+                        role: 'Web Developer',
+                        tasks: [
+                            'Created and developed using following languages and technologies: HTML, CSS, Javascript, Bootstrap, PHP, and MySql.',
+                            "Developed to make a cost booking website for our brand new startup called 'Ruangkos'."
+                        ],
+                        images: [
+                            {
+                                id: 0,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/181723013-cba13471-c81c-411d-b8de-27b596eb1da6.png'
+                            },
+                            {
+                                id: 1,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/181723060-915313e8-cd4a-4116-a689-5d55b4116381.png'
+                            },
+                            {
+                                id: 2,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/181723143-db80a333-86c3-4b99-be70-729beda548f3.png'
+                            },
+                            {
+                                id: 3,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/181723221-4c5ae966-7572-46ea-9015-31afa1a1b66e.png'
+                            },
+                            {
+                                id: 4,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/181723345-8f763f59-0cab-4e5b-b970-79a1f928c692.png'
+                            }
+                        ],
+                        selectedImage: 0,
+                        name: 'Ruangkos',
+                        url: 'https://ruangkos.com/',
                     },
                 ],
                 copyrightText: 'Muhammad Ziyad Al Maududi - 2022',
