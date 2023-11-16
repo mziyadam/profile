@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- "Inter var",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol" -->
 
 <head>
     <meta charset="UTF-8">
@@ -15,6 +16,27 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 </head>
 <style>
+    @font-face {
+        font-family: Inter;
+        src: url(Inter.ttf);
+    }
+
+    div {
+        font-family: Inter;
+    }
+
+    .super-bold {
+        font-weight: 520;
+    }
+
+    .semi-bold {
+        font-weight: 400;
+    }
+
+    .semi-light {
+        font-weight: 360;
+    }
+
     .text-justify {
         text-align: justify
     }
@@ -51,6 +73,14 @@
     .slide-fade-leave-to {
         transform: translateY(20px);
         opacity: 0;
+    }
+
+    .bottom-left-90 {
+        border-bottom-left-radius: 0px !important;
+    }
+
+    .bottom-right-90 {
+        border-bottom-right-radius: 0px !important;
     }
 </style>
 <script src="https://unpkg.com/vue@3.1.1/dist/vue.global.prod.js"></script>
@@ -105,20 +135,23 @@
         <Transition name="slide-fade">
             <div class="" v-if="type === 'Home'">
                 <img src="me.png" alt="my photo" class="rounded-circle border border-info w-25 m-3" srcset="">
-                <h1>I'm {{profile.name}}</h1>
-                <p>{{profile.bio}}</p>
+                <h5 class="semi-bold">Hi, I'm {{profile.name}} and I'am a</h5>
+                <h2 class="super-bold">Full-Stack Software Developer</h2>
+                <h5 class="semi-bold">with many projects and years of experience</h5>
                 <hr>
-                <h3>Areas of Interest</h3>
-                <p>Take a look at some of the things I'm interested in</p>
+                <h3>Tech Stacks <a href="#" style="text-decoration: none;" class="semi-light" @click="type='Contact'">(Open for Freelance)</a></h3>
+                <!-- <p>Take a look at some of the things I'm interested in</p> -->
+                <p>Take a look at some of the things I'm interested and used in</p>
                 <div class="row">
-                    <div class="col-md-3" v-for="item in areasOfInterest">
+                    <div class="col-md-4" v-for="item in areasOfInterest">
                         <img class="img-fluid limit-logo-size p-4" v-bind:src="'icon/'+item.icon" alt="">
                         <h5>{{item.name}}</h5>
+                        <p>{{item.skills}}</p>
                     </div>
                 </div>
             </div>
             <div v-else-if="type === 'About'">
-                <h1>About</h1>
+                <h1>About Me</h1>
                 <hr>
                 <div class="row">
                     <div class="col-md-3">
@@ -137,9 +170,30 @@
                     </div>
                 </div>
                 <hr>
+                <h3>Work Experience</h3>
+                <div class="row m-3">
+                    <div class="text-start row" v-for="item in profile.workExperience">
+                        <div class="col-md-3">
+                            <p style="font-weight: 520;">{{item.company}}</p>
+                            <p style="font-weight: 400;">{{item.position}}</p>
+                        </div>
+                        <div class="col-md-9">
+                            <p v-for="desc in item.description">▪ {{desc}}</p>
+                            <small style="color: #62676a;">{{item.year}} · {{item.location}}</small>
+                            <hr>
+                        </div>
+                    </div>
+
+                    <!-- <div v-for="item in profile.educations">
+                        <img class="img-fluid limit-logo-size-bigger p-4" v-bind:src="'icon/'+item.icon" alt="">
+                        <h5>{{item.name}}</h5>
+                        <p>{{item.description}}</p>
+                    </div> -->
+                </div>
+                <hr>
                 <h3>Education</h3>
                 <div class="row">
-                    <div v-for="item in profile.educations">
+                    <div class="col-md-4" v-for="item in profile.educations">
                         <img class="img-fluid limit-logo-size-bigger p-4" v-bind:src="'icon/'+item.icon" alt="">
                         <h5>{{item.name}}</h5>
                         <p>{{item.description}}</p>
@@ -151,58 +205,78 @@
             </div>
             <div v-else-if="type === 'Projects'">
                 <h1>Projects</h1>
-                <div class="row" v-for="project in projects">
-                    <hr>
-                    <div class="col-md-6">
-                        <div class=" mt-3">
-                            <div :id="'carouselExampleDark'+project.id" class="carousel carousel-dark slide"
-                                data-bs-ride="carousel">
-                                <div class="carousel-indicators">
-                                    <button type="button" v-for="image in project.images"
-                                        @click="project.selectedImage=image.id"
-                                        :data-bs-target="'#carouselExampleDark'+project.id"
-                                        :data-bs-slide-to="''+image.id"
-                                        :class="[project.selectedImage===image.id? 'active':'']" aria-current="true"
-                                        :aria-label="'Slide'+ (image.id+1)"
-                                        style="position: relative; bottom: -50px;"></button>
-                                </div>
-                                <div class="carousel-inner ">
-                                    <div :class="['carousel-item', project.selectedImage===image.id? 'active':'']"
-                                        v-for="image in project.images" data-bs-interval="10000">
-                                        <img :src="''+image.imageUrl" class="d-block img-fluid m-auto"
-                                            style="max-height: 360px;" alt="...">
+                <div class="list-group list-group-horizontal " id="list-tab" role="tablist">
+                    <a @click="projectType='Mobile'"
+                        :class="['nav-link list-group-item list-group-item-action bottom-left-90',projectType==='Mobile'? 'active':'']"
+                        id="list-home-list" data-bs-toggle="list" href="#list-home" role="tab"
+                        aria-controls="list-home">Mobile</a>
+                    <a @click="projectType='Website'"
+                        :class="['nav-link list-group-item list-group-item-action',projectType==='Website'? 'active':'']"
+                        id="list-profile-list" data-bs-toggle="list" href="#list-profile" role="tab"
+                        aria-controls="list-profile">Website</a>
+                    <a @click="projectType='Game'"
+                        :class="['nav-link list-group-item list-group-item-action',projectType==='Game'? 'active':'']"
+                        class="list-group-item list-group-item-action" id="list-messages-list" data-bs-toggle="list"
+                        href="#list-messages" role="tab" aria-controls="list-messages">Game</a>
+                    <a @click="projectType='Desktop'"
+                        :class="['nav-link list-group-item list-group-item-action bottom-right-90',projectType==='Desktop'? 'active':'']"
+                        id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab"
+                        aria-controls="list-settings">Desktop</a>
+                </div>
+                <div v-for="project in projects">
+                    <span class="row" v-if="project.type==projectType">
+                        <hr>
+                        <div class="col-md-6">
+                            <div class=" mt-3">
+                                <div :id="'carouselExampleDark'+project.id" class="carousel carousel-dark slide"
+                                    data-bs-ride="carousel">
+                                    <div class="carousel-indicators">
+                                        <button type="button" v-for="image in project.images"
+                                            @click="project.selectedImage=image.id"
+                                            :data-bs-target="'#carouselExampleDark'+project.id"
+                                            :data-bs-slide-to="''+image.id"
+                                            :class="[project.selectedImage===image.id? 'active':'']" aria-current="true"
+                                            :aria-label="'Slide'+ (image.id+1)"
+                                            style="position: relative; bottom: -50px;"></button>
                                     </div>
+                                    <div class="carousel-inner ">
+                                        <div :class="['carousel-item', project.selectedImage===image.id? 'active':'']"
+                                            v-for="image in project.images" data-bs-interval="10000">
+                                            <img :src="''+image.imageUrl" class="d-block img-fluid m-auto"
+                                                style="max-height: 360px;" alt="...">
+                                        </div>
+                                    </div>
+                                    <button class="carousel-control-prev" type="button"
+                                        :data-bs-target="'#carouselExampleDark'+project.id" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button"
+                                        :data-bs-target="'#carouselExampleDark'+project.id" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
                                 </div>
-                                <button class="carousel-control-prev" type="button"
-                                    :data-bs-target="'#carouselExampleDark'+project.id" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
-                                </button>
-                                <button class="carousel-control-next" type="button"
-                                    :data-bs-target="'#carouselExampleDark'+project.id" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
-                                </button>
+                                <br>
+                                <a :href="''+project.url" class="decor-none black">
+                                    <button type="button" class="mt-3 mb-3 btn btn-info active" style="width: 100%">
+                                        {{project.name}}
+                                    </button>
+                                </a>
                             </div>
-                            <br>
-                            <a :href="''+project.url" class="decor-none black">
-                                <button type="button" class="mt-3 mb-3 btn btn-info active" style="width: 100%">
-                                    {{project.name}}
-                                </button>
-                            </a>
                         </div>
-                    </div>
-                    <div class="col-md-6 text-start">
-                        <h4 class="text-center">
-                            {{project.title}}
-                        </h4>
-                        <br>
-                        <p><b>Role: </b>{{project.role}}</p>
-                        <b>Tasks:</b>
-                        <ul>
-                            <li v-for="task in project.tasks">{{task}}</li>
-                        </ul>
-                    </div>
+                        <div class="col-md-6 text-start">
+                            <h4 class="text-center">
+                                {{project.title}}
+                            </h4>
+                            <br>
+                            <p><b>Role: </b>{{project.role}}</p>
+                            <b>Tasks:</b>
+                            <ul>
+                                <li v-for="task in project.tasks">{{task}}</li>
+                            </ul>
+                        </div>
+                    </span>
                 </div>
                 <hr>
                 <a :href="''+profile.githubUrl" class="decor-none">
@@ -255,10 +329,10 @@
                         <h6>Connect</h6>
                         <a class="decor-none" target="_blank" :href="''+profile.linkedinUrl"><i
                                 class="bi bi-linkedin"></i> Linkedin</a><br>
-                        <a class="decor-none" target="_blank" :href="''+profile.githubUrl"><i
-                                class="bi bi-github"></i> Github</a><br>
-                        <a class="decor-none" target="_blank" :href="''+profile.mediumUrl"><i
-                                class="bi bi-medium"></i> Medium</a>
+                        <a class="decor-none" target="_blank" :href="''+profile.githubUrl"><i class="bi bi-github"></i>
+                            Github</a><br>
+                        <a class="decor-none" target="_blank" :href="''+profile.mediumUrl"><i class="bi bi-medium"></i>
+                            Medium</a>
 
                         <hr>
                     </div>
@@ -283,7 +357,8 @@
     createApp({
         data() {
             return {
-                type: 'Home',
+                type: 'Projects',
+                projectType: 'Mobile',
                 activeColor: 'red',
                 fontSize: 30,
                 message: 'Hello Vue!',
@@ -293,6 +368,79 @@
                     bio: "Studious and innovative programmer. Interested in complex problems. Highly-inducive in analyzing things.",
                     phoneNumber: '+6285889168150',
                     email: 'mziyad195@gmail.com',
+                    workExperience: [
+                        {
+                            company: 'The Ministry of Religious Affairs RI',
+                            position: 'Expert Staff - Programmer',
+                            description: [
+                                'Manage and develop an internal employee information system website for more than 400.000 employees using Laravel, Vue, and MSSQL.',
+                                'Integrate with Republic of Indonesia State Civil Service Agency for real-time updates.',
+                                'Develop API for employee information system using NestJS, MSSQL, and Kong.'
+                            ],
+                            year: 'May 2023 - Present',
+                            location: 'Jakarta, Indonesia'
+                        },
+                        {
+                            company: 'Bangkit Academy',
+                            position: 'Mobile Development Learning Mentor',
+                            description: [
+                                'Lead and assist a cohort of 25 students in a class from mobile development learning path',
+                                'Provide consultative support to study together and support each other',
+                                'Provide a supportive learning environment that will lead to a high graduation rate among students'
+                            ],
+                            year: 'Feb 2023 - Juli 2023',
+                            location: 'Jakarta, Indonesia'
+                        },
+                        {
+                            company: 'PT Gandar Sangkil Infinit',
+                            position: 'Junior Web Developer',
+                            description: [
+                                'Manage TaxPrime website using Wordpress',
+                                'Develop customer relationship management system using CodeIgniter 3, and MySQL',
+                                'Develop virtual office website using NestJs, NextJS, and MySQL'
+                            ],
+                            year: 'Feb 2023 - Apr 2023',
+                            location: 'Jakarta, Indonesia'
+                        },
+                        {
+                            company: 'Ruangkos',
+                            position: 'Chief Technology Officer',
+                            description: [
+                                'Responsible for the technology needs of our little startup and its research and development',
+                                'Create the website and the application using PHP, and MySQL'
+                            ],
+                            year: 'Dec 2021 - May 2023',
+                            location: 'Malang, Indonesia'
+                        },
+                        {
+                            company: 'HUMANISTIK FIA UB',
+                            position: 'Web Developer',
+                            description: [
+                                'Create websites for the election of the head of the student association majoring in public administration FIA UB 2023 using PHP, VueJS, ChartJS, and MySQL'
+                            ],
+                            year: 'Dec 2022',
+                            location: 'Malang, Indonesia'
+                        },
+                        {
+                            company: 'PT Utama Abadi Sejahtera',
+                            position: 'Web Developer',
+                            description: [
+                                'Create websites for client which is Faculty of Economics, the State University of Malang'
+                            ],
+                            year: 'Aug 2021 - Dec 2021',
+                            location: 'Malang, Indonesia'
+                        },
+                        {
+                            company: 'Computer Laboratory Filkom UB',
+                            position: 'Laboratory Assistant',
+                            description: [
+                                'Subjects include: Basic Programming, Operating System, and Computer Network',
+                                'Taught and graded more than 150 students about related subjects through asynchronous and synchronous teaching methods.'
+                            ],
+                            year: 'Mar 2021 - Dec 2021',
+                            location: 'Malang, Indonesia'
+                        }
+                    ],
                     educations: [
                         {
                             name: 'Universitas Brawijaya',
@@ -301,9 +449,15 @@
                         },
                         {
                             name: 'Bangkit Academy 2022',
-                            description: "Bangkit is a unique career readiness program in technology led by Google. I'am a one of few distinction graduates of the mobile development learning path.",
+                            description: "Bangkit is a unique career readiness program in technology led by Google. I'am a one of few distinction graduates of the Mobile Development learning path.",
                             icon: 'bangkit-academy.jpg',
-                        }
+                        },
+                        {
+                            name: 'IDCamp 2022',
+                            description: "IDCamp is an Indosat scholarship to produce industry standard Indonesian developers. I am a graduate of the Multi-Platform App Developer learning path.",
+                            icon: 'idcamp-circle.png',
+                        },
+
                     ],
                     githubUrl: 'https://github.com/mziyadam',
                     linkedinUrl: 'https://www.linkedin.com/in/mziyadam',
@@ -312,27 +466,41 @@
                 },
                 areasOfInterest: [
                     {
-                        name: 'Mobile Apps Development',
+                        name: 'Mobile App Development',
                         icon: 'android-development.png',
+                        skills: 'Kotlin, Flutter'
                     },
                     {
                         name: 'Website Development',
                         icon: 'website-development.png',
+                        skills: 'Laravel, VueJs, NestJS, CodeIgniter, Wordpress'
+                    },
+                    {
+                        name: 'Design',
+                        icon: 'web-design.png',
+                        skills: 'Figma, Adobe Illustrator'
+                    },
+                    {
+                        name: 'Video and Photo Editing',
+                        icon: 'video-editing.png',
+                        skills: 'Adobe Premiere Pro, Adobe Photoshop'
+                    },
+                    {
+                        name: 'Desktop App Development',
+                        icon: 'coding.png',
+                        skills: 'Java Swing, Electron'
                     },
                     {
                         name: 'Game Development',
                         icon: 'game-development.png',
-                    },
-                    {
-                        name: 'Video Editing',
-                        icon: 'video-editing.png',
+                        skills: 'C++, OpenGL'
                     },
                 ],
                 projects: [
                     {
                         id: 0,
                         title: 'An Educational MVVM Android Application to Read, Write, and Count',
-                        role: 'Mobile Developer',
+                        role: 'Android Developer',
                         tasks: [
                             'Created and developed using following languages and technologies: Kotlin, REST API, LiveData, ViewModel, ViewBinding, Retrofit, GSON, OkHttp3, Glide, TextToSpeech, and AndroidDraw.',
                             'Developed by three roles, consisting of the Mobile Development, Cloud Computing, and Machine Learning.',
@@ -375,7 +543,7 @@
                     {
                         id: 1,
                         title: 'A Clean Architecture Android Application for Listening Radio with CI/CD and Modularization',
-                        role: 'Mobile Developer',
+                        role: 'Android Developer',
                         tasks: [
                             'Created and developed using following languages and technologies: Kotlin, LiveData, ViewModel, Room, ViewBinding, Koin, Glide, Coroutines, Retrofit, GSON, OkHttp3, and ExoPlayer.',
                             'Provides additional features such as favorite, and player notification.',
@@ -404,13 +572,14 @@
                             }
                         ],
                         selectedImage: 0,
+                        type: 'Mobile',
                         name: 'Zradio',
                         url: 'https://play.google.com/store/apps/details?id=com.ziyad.zradio',
                     },
                     {
                         id: 2,
                         title: 'A Simple Android Application to Record Expenses and Income',
-                        role: 'Mobile Developer',
+                        role: 'Android Developer',
                         tasks: [
                             'Created and developed using following languages and technologies: Kotlin, LiveData, ViewModel, ViewBinding, FirebaseUI, Firebase Authentication, and Firestore Database.',
                             'Provides financial recording features such as adding expenses and income, editing, deleting, and filtering.'
@@ -438,13 +607,14 @@
                             }
                         ],
                         selectedImage: 0,
+                        type: 'Mobile',
                         name: 'Pencatat Uang',
                         url: 'https://github.com/mziyadam/Pencatat-Uang',
                     },
                     {
                         id: 3,
                         title: 'An MVVM Venture Android Application',
-                        role: 'Mobile Developer',
+                        role: 'Android Developer',
                         tasks: [
                             'Provides venture features such as discussion, introduction generator, and motivation',
                             'Created and developed using following languages and technologies: Kotlin, LiveData, ViewModel, ViewBinding, FirebaseUI, Firebase Authentication, Firebase Storage, and Firestore Database.',
@@ -473,13 +643,14 @@
                             }
                         ],
                         selectedImage: 0,
+                        type: 'Mobile',
                         name: 'Work Bucket',
                         url: 'https://github.com/mziyadam/workbucket-psi/',
                     },
                     {
                         id: 4,
                         title: 'A Flutter News Application with Categories Selector',
-                        role: 'Mobile Developer',
+                        role: 'Flutter Developer',
                         tasks: [
                             'Created and developed using following languages and technologies: Flutter, Dart, REST API, WebView, and HTTP.',
                             'Developed to make a news reader application separated by category.',
@@ -504,13 +675,14 @@
                             }
                         ],
                         selectedImage: 0,
+                        type: 'Mobile',
                         name: 'Znews',
                         url: 'https://play.google.com/store/apps/details?id=com.ziyad.znews',
                     },
                     {
                         id: 5,
                         title: 'A Simple Android Recipe Application.',
-                        role: 'Mobile Developer',
+                        role: 'Android Developer',
                         tasks: [
                             'Created and developed using following languages and technologies: Kotlin, LiveData, ViewModel, ViewBinding, Firebase, and Glide.',
                             'Developed to make a simple Android recipe application with search, review, personal note, and bookmark.',
@@ -535,6 +707,7 @@
                             }
                         ],
                         selectedImage: 0,
+                        type: 'Mobile',
                         name: 'Zcook',
                         url: 'https://play.google.com/store/apps/details?id=com.ziyad.zcook',
                     },
@@ -561,13 +734,14 @@
                             }
                         ],
                         selectedImage: 0,
+                        type: 'Game',
                         name: 'SpaceCop Adventure',
                         url: 'https://github.com/mziyadam/SpaceCop-Adventure/',
                     },
                     {
                         id: 7,
                         title: 'Faculty of Economics the State University of Malang Education Service Website',
-                        role: 'Web Developer',
+                        role: 'Full-Stack Developer',
                         tasks: [
                             'Created and developed using following languages and technologies: HTML, CSS, Javascript, Bootstrap, PHP, MySql, and Laravel.',
                             'Developed to make a website-based application to assist the Faculty of Economics, the State University of Malang in providing technology-based services'
@@ -587,13 +761,14 @@
                             }
                         ],
                         selectedImage: 0,
+                        type: 'Website',
                         name: 'Rumah Jawara Kampus Merdeka EKP Innovation Center (Jaka Kece)',
                         url: 'http://jakakece.ekp.fe.um.ac.id/home',
                     },
                     {
                         id: 8,
                         title: 'Cost Booking Website',
-                        role: 'Web Developer',
+                        role: 'Full-Stack Developer',
                         tasks: [
                             'Created and developed using following languages and technologies: HTML, CSS, Javascript, Bootstrap, PHP, and MySql.',
                             "Developed to make a cost booking website for our brand new startup called 'Ruangkos'."
@@ -621,13 +796,14 @@
                             }
                         ],
                         selectedImage: 0,
+                        type: 'Website',
                         name: 'Ruangkos',
                         url: 'https://ruangkos.com/',
                     },
                     {
                         id: 9,
                         title: 'Website for Listening to the Radio',
-                        role: 'Web Developer',
+                        role: 'Full-Stack Developer',
                         tasks: [
                             'Created and developed using the following languages and technologies: VueJS, REST API, HTML, CSS, Javascript, and Bootstrap.',
                             "This website simply plays Indonesian radio stations."
@@ -643,13 +819,14 @@
                             }
                         ],
                         selectedImage: 0,
+                        type: 'Website',
                         name: 'Zradio Web',
                         url: 'https://mziyadam.github.io/zradio-web/',
                     },
                     {
                         id: 10,
                         title: "Website for showing a city's weather",
-                        role: 'Web Developer',
+                        role: 'Front-End Developer',
                         tasks: [
                             'Created and developed using the following languages and technologies: VueJS, REST API, HTML, CSS, Javascript, and Bootstrap.',
                             "This website simply shows a city's weather."
@@ -665,13 +842,14 @@
                             }
                         ],
                         selectedImage: 0,
+                        type: 'Website',
                         name: 'Zweather',
                         url: 'https://github.com/mziyadam/zweather-web/',
                     },
                     {
                         id: 11,
                         title: "Website for organization election",
-                        role: 'Web Developer',
+                        role: 'Full-Stack Developer',
                         tasks: [
                             'Created and developed using the following languages and technologies: VueJS, PHP, MySQL, HTML, CSS, Javascript, and Bootstrap.',
                             "Website for the election of the head of the student association majoring in public administration FIA UB 2023."
@@ -687,13 +865,14 @@
                             }
                         ],
                         selectedImage: 0,
+                        type: 'Website',
                         name: 'Pemilwa HUMANISTIK 2023 Website',
                         url: 'https://pemilwahumanistik.000webhostapp.com/',
                     },
                     {
                         id: 12,
                         title: "A mini quiz application made with Flutter",
-                        role: 'Mobile Developer',
+                        role: 'Flutter Developer',
                         tasks: [
                             'Created and developed using following languages and technologies: Flutter, Dart, Provider, and Firebase.',
                             "Developed to make a simple quiz application using Flutter.",
@@ -718,13 +897,14 @@
                             }
                         ],
                         selectedImage: 0,
+                        type: 'Mobile',
                         name: 'A Mini Quiz App',
                         url: 'https://play.google.com/store/apps/details?id=com.ziyad.quiz_app_ziyad',
                     },
                     {
                         id: 14,
                         title: "A food ordering application for seller and buyer, especially for street vendor",
-                        role: 'Mobile Developer',
+                        role: 'Android Developer',
                         tasks: [
                             'Created and developed using following languages and technologies: Kotlin, LiveData, ViewModel, ViewBinding, Firebase, Glide, Cloud Messaging, Push Notification, CircleCI, Junit, Espresso, and WorkManager.',
                             "Implements continous integration using CircleCI, Cloud Messaging and Push Notification using Firebase Firebase Cloud Messaging, some unit test and integration test using JUnit4 and Espresso.",
@@ -766,8 +946,81 @@
                             }
                         ],
                         selectedImage: 0,
+                        type: 'Mobile',
                         name: 'An Android-Based Street Vendor Food Ordering Application',
                         url: 'https://play.google.com/store/apps/details?id=com.ziyad.quiz_app_ziyad',
+                    },
+                    {
+                        id: 15,
+                        title: "An application for generating letter number",
+                        role: 'Desktop App Developer',
+                        tasks: [
+                            'Created and developed using following languages and technologies: Electron, Bootstrap, VueJS, and Microsoft SQL Server.',
+                            "Developed to make a letter number app for Central Bureau of Statistics of Republic Indonesia based on certain criteria.",
+                        ],
+                        images: [
+                            {
+                                id: 0,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/283324946-da2baf60-089e-4c4a-9b6d-7c1fd3080ca2.png'
+                            },
+                            {
+                                id: 1,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/283328537-7f298648-a0aa-4943-a711-2809a8b68c78.png'
+                            },
+                            {
+                                id: 2,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/283340551-9305e39d-8d60-4053-8c6f-9c6cad722c8b.png'
+                            },
+                            {
+                                id: 3,
+                                imageUrl: 'https://user-images.githubusercontent.com/64635497/283340493-c3c1a790-d467-4b3b-8521-e728b2a37e6f.png'
+                            },
+                        ],
+                        selectedImage: 0,
+                        type: 'Desktop',
+                        name: 'Letter Number Generator',
+                        url: 'https://github.com/mziyadam/nomor_surat_generator/',
+                    },
+                    {
+                        id: 16,
+                        title: "Internal Employee Information System Website",
+                        role: 'Full-Stack Developer',
+                        tasks: [
+                            'Managed and developed using the following languages and technologies: Laravel, VueJS, Microsoft SQL Server, HTML, CSS, Javascript, and Bootstrap.',
+                            'Integrated with Republic of Indonesia State Civil Service Agency for real-time updates.',
+                            'Integrated with Public Housing Savings Management Agency for accessing related personal info.',
+                            "Website for the internal employee information system of the The Ministry of Religious Affairs."
+                        ],
+                        images: [
+                            {
+                                id: 0,
+                                imageUrl: 'ss/tapera.jpg'
+                            }
+                        ],
+                        selectedImage: 0,
+                        type: 'Website',
+                        name: 'Simpeg5',
+                        url: 'https://simpeg5.kemenag.go.id/',
+                    },
+                    {
+                        id: 17,
+                        title: "API for Employee Information System",
+                        role: 'Back-End Developer',
+                        tasks: [
+                            'Created and developed using the following languages and technologies: NestJS, Microsoft SQL Server, and Kong.',
+                            'Documented with Swagger.',
+                            "API version 2 for the internal employee information system of the The Ministry of Religious Affairs."
+                        ],
+                        images: [
+                            {
+                                id: 0,
+                                imageUrl: 'ss/api-ropeg.jpg'
+                            }
+                        ],
+                        selectedImage: 0,
+                        type: 'Website',
+                        name: 'API Ropeg',
+                        url: 'https://simpeg5.kemenag.go.id/api/',
                     },
                 ],
                 copyrightText: 'Muhammad Ziyad Al Maududi - 2022',
