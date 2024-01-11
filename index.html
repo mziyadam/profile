@@ -139,7 +139,8 @@
                 <h2 class="super-bold">Full-Stack Software Developer</h2>
                 <h5 class="semi-bold">with many projects and years of experience</h5>
                 <hr>
-                <h3>Tech Stacks <a href="#" style="text-decoration: none;" class="semi-light" @click="type='Contact'">(Open for Freelance)</a></h3>
+                <h3>Tech Stacks <a href="#" style="text-decoration: none;" class="semi-light"
+                        @click="type='Contact'">(Open for Freelance)</a></h3>
                 <!-- <p>Take a look at some of the things I'm interested in</p> -->
                 <p>Take a look at some of the things I'm interested and used in</p>
                 <div class="row">
@@ -223,7 +224,7 @@
                         id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab"
                         aria-controls="list-settings">Desktop</a>
                 </div>
-                <div v-for="project in projects">
+                <div v-for="project in projects.slice().reverse()">
                     <span class="row" v-if="project.type==projectType">
                         <hr>
                         <div class="col-md-6">
@@ -258,11 +259,34 @@
                                     </button>
                                 </div>
                                 <br>
-                                <a :href="''+project.url" class="decor-none black">
-                                    <button type="button" class="mt-3 mb-3 btn btn-info active" style="width: 100%">
-                                        {{project.name}}
-                                    </button>
-                                </a>
+                                <div class="row" v-if="project.url2 != null">
+                                    <div class="col-md-6">
+                                        <a :href="''+project.url" class="decor-none black">
+                                            <button type="button" class="mt-3 mb-3 btn btn-info active"
+                                                style="width: 100%">
+                                                {{project.name}}
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <a :href="''+project.url2" class="decor-none black">
+                                            <button type="button" class="mt-3 mb-3 btn btn-info active"
+                                                style="width: 100%">
+                                                {{project.name2}}
+                                            </button>
+                                        </a>
+                                    </div>
+
+                                </div>
+                                <div v-else>
+                                    <a :href="''+project.url" class="decor-none black">
+                                        <button type="button" class="mt-3 mb-3 btn btn-info active" style="width: 100%">
+                                            {{project.name}}
+                                        </button>
+                                    </a>
+                                </div>
+
                             </div>
                         </div>
                         <div class="col-md-6 text-start">
@@ -357,7 +381,7 @@
     createApp({
         data() {
             return {
-                type: 'Home',
+                type: 'Projects',
                 projectType: 'Mobile',
                 activeColor: 'red',
                 fontSize: 30,
@@ -468,7 +492,7 @@
                     {
                         name: 'Mobile App Development',
                         icon: 'android-development.png',
-                        skills: 'Kotlin, Flutter'
+                        skills: 'Kotlin, Flutter (Android and iOS)'
                     },
                     {
                         name: 'Website Development',
@@ -499,7 +523,7 @@
                 projects: [
                     {
                         id: 0,
-                        title: 'An Educational MVVM Android Application to Read, Write, and Count',
+                        title: 'An Educational MVVM Android App to Read, Write, and Count',
                         role: 'Android Developer',
                         tasks: [
                             'Created and developed using following languages and technologies: Kotlin, REST API, LiveData, ViewModel, ViewBinding, Retrofit, GSON, OkHttp3, Glide, TextToSpeech, and AndroidDraw.',
@@ -538,11 +562,12 @@
                         ],
                         selectedImage: 0,
                         name: 'Calistung',
+                        type: 'Mobile',
                         url: 'https://play.google.com/store/apps/details?id=com.ziyad.calistung',
                     },
                     {
                         id: 1,
-                        title: 'A Clean Architecture Android Application for Listening Radio with CI/CD and Modularization',
+                        title: 'A Clean Architecture Android App for Listening Radio with CI/CD and Modularization',
                         role: 'Android Developer',
                         tasks: [
                             'Created and developed using following languages and technologies: Kotlin, LiveData, ViewModel, Room, ViewBinding, Koin, Glide, Coroutines, Retrofit, GSON, OkHttp3, and ExoPlayer.',
@@ -573,12 +598,12 @@
                         ],
                         selectedImage: 0,
                         type: 'Mobile',
-                        name: 'Zradio',
+                        name: 'zradio',
                         url: 'https://play.google.com/store/apps/details?id=com.ziyad.zradio',
                     },
                     {
                         id: 2,
-                        title: 'A Simple Android Application to Record Expenses and Income',
+                        title: 'A Simple Android App to Record Expenses and Income',
                         role: 'Android Developer',
                         tasks: [
                             'Created and developed using following languages and technologies: Kotlin, LiveData, ViewModel, ViewBinding, FirebaseUI, Firebase Authentication, and Firestore Database.',
@@ -613,7 +638,7 @@
                     },
                     {
                         id: 3,
-                        title: 'An MVVM Venture Android Application',
+                        title: 'An MVVM Venture Android App',
                         role: 'Android Developer',
                         tasks: [
                             'Provides venture features such as discussion, introduction generator, and motivation',
@@ -649,7 +674,7 @@
                     },
                     {
                         id: 4,
-                        title: 'A Flutter News Application with Categories Selector',
+                        title: 'A Flutter News App with Categories Selector',
                         role: 'Flutter Developer',
                         tasks: [
                             'Created and developed using following languages and technologies: Flutter, Dart, REST API, WebView, and HTTP.',
@@ -676,12 +701,12 @@
                         ],
                         selectedImage: 0,
                         type: 'Mobile',
-                        name: 'Znews',
+                        name: 'znews',
                         url: 'https://play.google.com/store/apps/details?id=com.ziyad.znews',
                     },
                     {
                         id: 5,
-                        title: 'A Simple Android Recipe Application.',
+                        title: 'A Simple Android Recipe App',
                         role: 'Android Developer',
                         tasks: [
                             'Created and developed using following languages and technologies: Kotlin, LiveData, ViewModel, ViewBinding, Firebase, and Glide.',
@@ -708,7 +733,7 @@
                         ],
                         selectedImage: 0,
                         type: 'Mobile',
-                        name: 'Zcook',
+                        name: 'zcook',
                         url: 'https://play.google.com/store/apps/details?id=com.ziyad.zcook',
                     },
                     {
@@ -820,7 +845,7 @@
                         ],
                         selectedImage: 0,
                         type: 'Website',
-                        name: 'Zradio Web',
+                        name: 'zradio Web',
                         url: 'https://mziyadam.github.io/zradio-web/',
                     },
                     {
@@ -843,7 +868,7 @@
                         ],
                         selectedImage: 0,
                         type: 'Website',
-                        name: 'Zweather',
+                        name: 'zweather',
                         url: 'https://github.com/mziyadam/zweather-web/',
                     },
                     {
@@ -871,7 +896,7 @@
                     },
                     {
                         id: 12,
-                        title: "A mini quiz application made with Flutter",
+                        title: "A Mini Quiz App",
                         role: 'Flutter Developer',
                         tasks: [
                             'Created and developed using following languages and technologies: Flutter, Dart, Provider, and Firebase.',
@@ -898,12 +923,12 @@
                         ],
                         selectedImage: 0,
                         type: 'Mobile',
-                        name: 'A Mini Quiz App',
+                        name: 'zquiz',
                         url: 'https://play.google.com/store/apps/details?id=com.ziyad.quiz_app_ziyad',
                     },
                     {
                         id: 14,
-                        title: "A food ordering application for seller and buyer, especially for street vendor",
+                        title: "A Food Ordering App for Seller and Buyer, Especially for Street Vendor",
                         role: 'Android Developer',
                         tasks: [
                             'Created and developed using following languages and technologies: Kotlin, LiveData, ViewModel, ViewBinding, Firebase, Glide, Cloud Messaging, Push Notification, CircleCI, Junit, Espresso, and WorkManager.',
@@ -947,7 +972,7 @@
                         ],
                         selectedImage: 0,
                         type: 'Mobile',
-                        name: 'An Android-Based Street Vendor Food Ordering Application',
+                        name: 'Five Feat',
                         url: 'https://play.google.com/store/apps/details?id=com.ziyad.quiz_app_ziyad',
                     },
                     {
@@ -1021,6 +1046,82 @@
                         type: 'Website',
                         name: 'API Ropeg',
                         url: 'https://simpeg5.kemenag.go.id/api/',
+                    },
+                    {
+                        id: 18,
+                        title: "An Offline Lyrics Finder App",
+                        role: 'Flutter Developer',
+                        tasks: [
+                            'Created and developed using the following languages and technologies: Flutter, REST API, Dart, Provider, and HTTP.',
+                            'Developed to make a lyrics finder application with offline support, a song finder by its lyrics, either by speech or typing, add to favorite and searching feature',
+                            "Has been published to App Store and Google Playstore."
+                        ],
+                        images: [
+                            {
+                                id: 0,
+                                imageUrl: 'ss/zlirik-1.png'
+                            },
+                            {
+                                id: 1,
+                                imageUrl: 'ss/zlirik-2.png'
+                            },
+                            {
+                                id: 2,
+                                imageUrl: 'ss/zlirik-3.png'
+                            },
+                            {
+                                id: 3,
+                                imageUrl: 'ss/zlirik-4.png'
+                            },
+                            {
+                                id: 4,
+                                imageUrl: 'ss/zlirik-5.png'
+                            },
+                        ],
+                        selectedImage: 0,
+                        type: 'Mobile',
+                        name: 'zlirik (App Store)',
+                        name2: 'zlirik (Google Play)',
+                        url: 'https://apps.apple.com/id/app/zlirik/id6474467660',
+                        url2: 'https://play.google.com/store/apps/details?id=com.mziyadam.zlirik',
+                    },
+                    {
+                        id: 19,
+                        title: "An App for Listening to World Radio.",
+                        role: 'Flutter Developer',
+                        tasks: [
+                            'Created and developed using the following languages and technologies: Flutter, REST API, Dart, AudioPlayer, Provider, and HTTP.',
+                            'Provides additional features such as favorite, and searching.',
+                            "Has been published to App Store and Google Playstore."
+                        ],
+                        images: [
+                            {
+                                id: 0,
+                                imageUrl: 'ss/zradio2-1.png'
+                            },
+                            {
+                                id: 1,
+                                imageUrl: 'ss/zradio2-2.png'
+                            },
+                            {
+                                id: 2,
+                                imageUrl: 'ss/zradio2-3.png'
+                            },
+                            {
+                                id: 3,
+                                imageUrl: 'ss/zradio2-4.png'
+                            },
+                            {
+                                id: 4,
+                                imageUrl: 'ss/zradio2-5.png'
+                            },
+                        ],
+                        selectedImage: 0,
+                        type: 'Mobile',
+                        name: 'zradio 2 (App Store)',
+                        name2: 'zradio 2 (Google Play)',
+                        url: 'https://apps.apple.com/us/app/zradio-2/id6475183624',
+                        url2: 'https://play.google.com/store/apps/details?id=com.mziyadam.zradio_2',
                     },
                 ],
                 copyrightText: 'Muhammad Ziyad Al Maududi - 2022',
