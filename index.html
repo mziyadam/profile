@@ -1,11 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
-<!-- "Inter var",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol" -->
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <title>Welcome to Firebase Hosting</title> -->
+
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/11.0.1/firebase-app-compat.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/11.0.1/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/11.0.1/firebase-database-compat.js"></script>
+    <script defer src="/__/firebase/11.0.1/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/11.0.1/firebase-functions-compat.js"></script>
+    <script defer src="/__/firebase/11.0.1/firebase-messaging-compat.js"></script>
+    <script defer src="/__/firebase/11.0.1/firebase-storage-compat.js"></script>
+    <script defer src="/__/firebase/11.0.1/firebase-analytics-compat.js"></script>
+    <script defer src="/__/firebase/11.0.1/firebase-remote-config-compat.js"></script>
+    <script defer src="/__/firebase/11.0.1/firebase-performance-compat.js"></script>
+    <!-- 
+      initialize the SDK after all desired features are loaded, set useEmulator to false
+      to avoid connecting the SDK to running emulators.
+    -->
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+
+    <style media="screen">
+        body {
+            background: #ECEFF1;
+            color: rgba(0, 0, 0, 0.87);
+            font-family: Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #message {
+            background: white;
+            max-width: 360px;
+            margin: 100px auto 16px;
+            padding: 32px 24px;
+            border-radius: 3px;
+        }
+
+        #message h2 {
+            color: #ffa100;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 0 0 8px;
+        }
+
+        #message h1 {
+            font-size: 22px;
+            font-weight: 300;
+            color: rgba(0, 0, 0, 0.6);
+            margin: 0 0 16px;
+        }
+
+        #message p {
+            line-height: 140%;
+            margin: 16px 0 24px;
+            font-size: 14px;
+        }
+
+        #message a {
+            display: block;
+            text-align: center;
+            background: #039be5;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: white;
+            padding: 16px;
+            border-radius: 4px;
+        }
+
+        #message,
+        #message a {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        }
+
+        #load {
+            color: rgba(0, 0, 0, 0.4);
+            text-align: center;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+
+            body,
+            #message {
+                margin-top: 0;
+                background: white;
+                box-shadow: none;
+            }
+
+            body {
+                border-top: 16px solid #ffa100;
+            }
+        }
+    </style>
     <title>mziyadam - Muhammad Ziyad Al Maududi Profile</title>
     <link rel="icon" href="https://raw.githubusercontent.com/mziyadam/Beranda/master/profildiri.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -13,268 +104,303 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
         crossorigin="anonymous"></script>
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8720658881637782"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8720658881637782"
+        crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <style>
+        @font-face {
+            font-family: Inter;
+            src: url(Inter.ttf);
+        }
+
+        div {
+            font-family: Inter;
+        }
+
+        .super-bold {
+            font-weight: 520;
+        }
+
+        .semi-bold {
+            font-weight: 400;
+        }
+
+        .semi-light {
+            font-weight: 360;
+        }
+
+        .text-justify {
+            text-align: justify
+        }
+
+        .limit-logo-size {
+            /* min-height: 120px; */
+            max-height: 120px;
+        }
+
+        .limit-logo-size-bigger {
+            min-height: 240px;
+            max-height: 240px;
+        }
+
+        .black {
+            color: black;
+        }
+
+        .decor-none {
+            text-decoration: none;
+        }
+
+        .slide-fade-enter-active {
+            transition: all 0.1s ease-out;
+        }
+
+        .slide-fade-leave-active {
+            transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);
+        }
+
+        ul {
+            list-style-type: square;
+        }
+
+        .slide-fade-enter-from,
+        .slide-fade-leave-to {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        .bottom-left-90 {
+            border-bottom-left-radius: 0px !important;
+        }
+
+        .bottom-right-90 {
+            border-bottom-right-radius: 0px !important;
+        }
+    </style>
 </head>
-<style>
-    @font-face {
-        font-family: Inter;
-        src: url(Inter.ttf);
-    }
 
-    div {
-        font-family: Inter;
-    }
-
-    .super-bold {
-        font-weight: 520;
-    }
-
-    .semi-bold {
-        font-weight: 400;
-    }
-
-    .semi-light {
-        font-weight: 360;
-    }
-
-    .text-justify {
-        text-align: justify
-    }
-
-    .limit-logo-size {
-        /* min-height: 120px; */
-        max-height: 120px;
-    }
-
-    .limit-logo-size-bigger {
-        min-height: 240px;
-        max-height: 240px;
-    }
-
-    .black {
-        color: black;
-    }
-
-    .decor-none {
-        text-decoration: none;
-    }
-
-    .slide-fade-enter-active {
-        transition: all 0.1s ease-out;
-    }
-
-    .slide-fade-leave-active {
-        transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);
-    }
-
-    ul {
-        list-style-type: square;
-    }
-
-    .slide-fade-enter-from,
-    .slide-fade-leave-to {
-        transform: translateY(20px);
-        opacity: 0;
-    }
-
-    .bottom-left-90 {
-        border-bottom-left-radius: 0px !important;
-    }
-
-    .bottom-right-90 {
-        border-bottom-right-radius: 0px !important;
-    }
-</style>
-<script src="https://unpkg.com/vue@3.1.1/dist/vue.global.prod.js"></script>
-<!--https://colorhunt.co/palette/f9f3dfcdf2caffdefaffc898-->
-<div id="app">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="https://mziyadam.github.io/profile/"><b>{{profile.username}}</b></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a @click="type='Home'" :class="['nav-link',type==='Home'? 'active':'']" aria-current="page"
-                            href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a @click="type='About'" :class="['nav-link',type==='About'? 'active':'']" href="#">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a @click="type='Projects'" :class="['nav-link',type==='Projects'? 'active':'']"
-                            href="#">Projects</a>
-                    </li>
-                    <li class="nav-item">
-                        <a @click="type='Contact'" :class="['nav-link',type==='Contact'? 'active':'']"
-                            href="#">Contact</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" target="_blank" :href="''+profile.linkedinUrl"><i
-                                class="bi bi-linkedin"></i></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" target="_blank" :href="''+profile.githubUrl"><i
-                                class="bi bi-github"></i></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" target="_blank" :href="''+profile.mediumUrl"><i
-                                class="bi bi-medium"></i></a>
-                    </li>
-                </ul>
-                <!-- <form class="d-flex">
+<body>
+    <script src="https://unpkg.com/vue@3.1.1/dist/vue.global.prod.js"></script>
+    <!--https://colorhunt.co/palette/f9f3dfcdf2caffdefaffc898-->
+    <div id="app">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="https://mziyadam.github.io/profile/"><b>{{profile.username}}</b></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a @click="type='Home'" :class="['nav-link',type==='Home'? 'active':'']" aria-current="page"
+                                href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a @click="type='About'" :class="['nav-link',type==='About'? 'active':'']"
+                                href="#">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a @click="type='Projects'" :class="['nav-link',type==='Projects'? 'active':'']"
+                                href="#">Projects</a>
+                        </li>
+                        <li class="nav-item">
+                            <a @click="type='Contact'" :class="['nav-link',type==='Contact'? 'active':'']"
+                                href="#">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" target="_blank" :href="''+profile.linkedinUrl"><i
+                                    class="bi bi-linkedin"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" target="_blank" :href="''+profile.githubUrl"><i
+                                    class="bi bi-github"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" target="_blank" :href="''+profile.mediumUrl"><i
+                                    class="bi bi-medium"></i></a>
+                        </li>
+                    </ul>
+                    <!-- <form class="d-flex">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form> -->
-            </div>
-        </div>
-    </nav>
-    <div class="container text-center align-middle pt-3 pb-3">
-        <Transition name="slide-fade">
-            <div class="" v-if="type === 'Home'">
-                <img src="me.png" alt="my photo" class="rounded-circle border border-info w-25 m-3" srcset="">
-                <h5 class="semi-bold">Hi, I'm Muhammad Ziyad Al Maududi and I'am a</h5>
-                <h2 class="super-bold">Software Developer</h2>
-                <h5 class="semi-bold">with many projects and years of experience</h5>
-                <br>
-                <div class="text-center">
-                    <a target="_blank" href="https://www.credential.net/a1d1a491-fd7d-42aa-a469-acb10b904d7c#gs.dfgnvy">
-                    <img class="img-fluid m-2" style="vertical-align: top;" src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/56243794" alt="">
-                </a>
-            
-                    <div data-iframe-width="150" data-iframe-height="270" data-share-badge-id="223f711e-883d-48f2-8d23-de78d657b186" data-share-badge-host="https://www.credly.com"></div>
-                
-                <script type="text/javascript" src="//cdn.credly.com/assets/utilities/embed.js"></script>
-                </div>
-                <hr>
-                <h3>Tech Stacks <a href="#" style="text-decoration: none;" class="semi-light"
-                        @click="type='Contact'">(Open for Freelance)</a></h3>
-                <!-- <p>Take a look at some of the things I'm interested in</p> -->
-                <p>Take a look at some of the things I'm interested and used in</p>
-                <div class="row">
-                    <div class="col-md-4" v-for="item in areasOfInterest">
-                        <img class="img-fluid limit-logo-size p-4" v-bind:src="'icon/'+item.icon" alt="">
-                        <h5>{{item.name}}</h5>
-                        <p>{{item.skills}}</p>
-                    </div>
                 </div>
             </div>
-            <div v-else-if="type === 'About'">
-                <h1>About Me</h1>
-                <hr>
-                <div class="row">
-                    <div class="col-md-3">
-                        <img src="me.png" alt="my photo" class="rounded-circle border border-info w-75 m-3" srcset="">
-                    </div>
-                    <div class="col-md-9 d-flex align-items-center">
-                        <div class="text-justify">
-                            <h2>My name is {{profile.name}}</h2>
-                            <p>People usually call me Ziyad. I'm a passionate, adaptive, and hard-working person.
-                                Interested
-                                in Mobile Development, and other technologies such as Web Development. Had been
-                                building
-                                and working with personal projects to learn many things.
-                                A Google Certified Associate Android Developer.</p>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <h3>Work Experience</h3>
-                <div class="row m-3">
-                    <div class="text-start row" v-for="item in profile.workExperience">
-                        <div class="col-md-3">
-                            <p style="font-weight: 520;">{{item.company}}</p>
-                            <p style="font-weight: 400;">{{item.position}}</p>
-                        </div>
-                        <div class="col-md-9">
-                            <p v-for="desc in item.description">▪ {{desc}}</p>
-                            <small style="color: #62676a;">{{item.year}} · {{item.location}}</small>
-                            <hr>
-                        </div>
-                    </div>
+        </nav>
+        <div class="container text-center align-middle pt-3 pb-3">
+            <Transition name="slide-fade">
+                <div class="" v-if="type === 'Home'">
+                    <img src="me.png" alt="my photo" class="rounded-circle border border-info w-25 m-3" srcset="">
+                    <h5 class="semi-bold">Hi, I'm Muhammad Ziyad Al Maududi and I'am a</h5>
+                    <h2 class="super-bold">Software Developer</h2>
+                    <h5 class="semi-bold">with many projects and years of experience</h5>
+                    <br>
+                    <div class="text-center">
+                        <a target="_blank"
+                            href="https://www.credential.net/a1d1a491-fd7d-42aa-a469-acb10b904d7c#gs.dfgnvy">
+                            <img class="img-fluid m-2" style="vertical-align: top;"
+                                src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/56243794"
+                                alt="">
+                        </a>
 
-                    <!-- <div v-for="item in profile.educations">
+                        <div data-iframe-width="150" data-iframe-height="270"
+                            data-share-badge-id="223f711e-883d-48f2-8d23-de78d657b186"
+                            data-share-badge-host="https://www.credly.com"></div>
+
+                        <script type="text/javascript" src="//cdn.credly.com/assets/utilities/embed.js"></script>
+                        
+                        <a target="_blank"
+                            href="https://www.credential.net/40eb13d2-011c-4f2a-98b3-1fe86d610cdb">
+                            <img class="img-fluid m-2" style="vertical-align: top;"
+                                src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/121829764"
+                                alt="">
+                        </a>
+                    </div>
+                    <hr>
+                    <h3>Tech Stacks <a href="#" style="text-decoration: none;" class="semi-light"
+                            @click="type='Contact'">(Open for Freelance)</a></h3>
+                    <!-- <p>Take a look at some of the things I'm interested in</p> -->
+                    <p>Take a look at some of the things I'm interested and used in</p>
+                    <div class="row">
+                        <div class="col-md-4" v-for="item in areasOfInterest">
+                            <img class="img-fluid limit-logo-size p-4" v-bind:src="'../icon/'+item.icon" alt="">
+                            <h5>{{item.name}}</h5>
+                            <p>{{item.skills}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div v-else-if="type === 'About'">
+                    <h1>About Me</h1>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img src="me.png" alt="my photo" class="rounded-circle border border-info w-75 m-3"
+                                srcset="">
+                        </div>
+                        <div class="col-md-9 d-flex align-items-center">
+                            <div class="text-justify">
+                                <h2>My name is {{profile.name}}</h2>
+                                <p>People usually call me Ziyad. I'm a passionate, adaptive, and hard-working person.
+                                    Interested
+                                    in Mobile Development, and other technologies such as Web Development. Had been
+                                    building
+                                    and working with personal projects to learn many things.
+                                    A Google Certified Associate Android Developer.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <h3>Work Experience</h3>
+                    <div class="row m-3">
+                        <div class="text-start row" v-for="item in profile.workExperience">
+                            <div class="col-md-3">
+                                <p style="font-weight: 520;">{{item.company}}</p>
+                                <p style="font-weight: 400;">{{item.position}}</p>
+                            </div>
+                            <div class="col-md-9">
+                                <p v-for="desc in item.description">▪ {{desc}}</p>
+                                <small style="color: #62676a;">{{item.year}} · {{item.location}}</small>
+                                <hr>
+                            </div>
+                        </div>
+
+                        <!-- <div v-for="item in profile.educations">
                         <img class="img-fluid limit-logo-size-bigger p-4" v-bind:src="'icon/'+item.icon" alt="">
                         <h5>{{item.name}}</h5>
                         <p>{{item.description}}</p>
                     </div> -->
-                </div>
-                <hr>
-                <h3>Education</h3>
-                <div class="row">
-                    <div class="col-md-6" v-for="item in profile.educations">
-                        <img class="img-fluid limit-logo-size-bigger p-4" v-bind:src="'icon/'+item.icon" alt="">
-                        <h5>{{item.name}}</h5>
-                        <p>{{item.description}}</p>
                     </div>
+                    <hr>
+                    <h3>Education</h3>
+                    <div class="row">
+                        <div class="col-md-6" v-for="item in profile.educations">
+                            <img class="img-fluid limit-logo-size-bigger p-4" v-bind:src="'../icon/'+item.icon" alt="">
+                            <h5>{{item.name}}</h5>
+                            <p>{{item.description}}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <h3>Some of the unique things about me</h3>
+                    <p class="text-justify">{{profile.aboutMe}}</p>
                 </div>
-                <hr>
-                <h3>Some of the unique things about me</h3>
-                <p class="text-justify">{{profile.aboutMe}}</p>
-            </div>
-            <div v-else-if="type === 'Projects'">
-                <h1>Projects</h1>
-                <div class="list-group list-group-horizontal " id="list-tab" role="tablist">
-                    <a @click="projectType='Mobile'"
-                        :class="['nav-link list-group-item list-group-item-action bottom-left-90',projectType==='Mobile'? 'active':'']"
-                        id="list-home-list" data-bs-toggle="list" href="#list-home" role="tab"
-                        aria-controls="list-home">Mobile</a>
-                    <a @click="projectType='Website'"
-                        :class="['nav-link list-group-item list-group-item-action',projectType==='Website'? 'active':'']"
-                        id="list-profile-list" data-bs-toggle="list" href="#list-profile" role="tab"
-                        aria-controls="list-profile">Website</a>
-                    <a @click="projectType='Game'"
-                        :class="['nav-link list-group-item list-group-item-action',projectType==='Game'? 'active':'']"
-                        class="list-group-item list-group-item-action" id="list-messages-list" data-bs-toggle="list"
-                        href="#list-messages" role="tab" aria-controls="list-messages">Game</a>
-                    <a @click="projectType='Desktop'"
-                        :class="['nav-link list-group-item list-group-item-action bottom-right-90',projectType==='Desktop'? 'active':'']"
-                        id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab"
-                        aria-controls="list-settings">Desktop</a>
-                </div>
-                <div v-for="project in projects.slice().reverse()">
-                    <span class="row" v-if="project.type==projectType">
-                        <hr>
-                        <div class="col-md-6">
-                            <div class=" mt-3">
-                                <div :id="'carouselExampleDark'+project.id" class="carousel carousel-dark slide"
-                                    data-bs-ride="carousel">
-                                    <div class="carousel-indicators">
-                                        <button type="button" v-for="image in project.images"
-                                            @click="project.selectedImage=image.id"
-                                            :data-bs-target="'#carouselExampleDark'+project.id"
-                                            :data-bs-slide-to="''+image.id"
-                                            :class="[project.selectedImage===image.id? 'active':'']" aria-current="true"
-                                            :aria-label="'Slide'+ (image.id+1)"
-                                            style="position: relative; bottom: -50px;"></button>
-                                    </div>
-                                    <div class="carousel-inner ">
-                                        <div :class="['carousel-item', project.selectedImage===image.id? 'active':'']"
-                                            v-for="image in project.images" data-bs-interval="10000">
-                                            <img :src="''+image.imageUrl" class="d-block img-fluid m-auto"
-                                                style="max-height: 360px;" alt="...">
+                <div v-else-if="type === 'Projects'">
+                    <h1>Projects</h1>
+                    <div class="list-group list-group-horizontal " id="list-tab" role="tablist">
+                        <a @click="projectType='Mobile'"
+                            :class="['nav-link list-group-item list-group-item-action bottom-left-90',projectType==='Mobile'? 'active':'']"
+                            id="list-home-list" data-bs-toggle="list" href="#list-home" role="tab"
+                            aria-controls="list-home">Mobile</a>
+                        <a @click="projectType='Website'"
+                            :class="['nav-link list-group-item list-group-item-action',projectType==='Website'? 'active':'']"
+                            id="list-profile-list" data-bs-toggle="list" href="#list-profile" role="tab"
+                            aria-controls="list-profile">Website</a>
+                        <a @click="projectType='Game'"
+                            :class="['nav-link list-group-item list-group-item-action',projectType==='Game'? 'active':'']"
+                            class="list-group-item list-group-item-action" id="list-messages-list" data-bs-toggle="list"
+                            href="#list-messages" role="tab" aria-controls="list-messages">Game</a>
+                        <a @click="projectType='Desktop'"
+                            :class="['nav-link list-group-item list-group-item-action bottom-right-90',projectType==='Desktop'? 'active':'']"
+                            id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab"
+                            aria-controls="list-settings">Desktop</a>
+                    </div>
+                    <div v-for="project in projects.slice().reverse()">
+                        <span class="row" v-if="project.type==projectType">
+                            <hr>
+                            <div class="col-md-6">
+                                <div class=" mt-3">
+                                    <div :id="'carouselExampleDark'+project.id" class="carousel carousel-dark slide"
+                                        data-bs-ride="carousel">
+                                        <div class="carousel-indicators">
+                                            <button type="button" v-for="image in project.images"
+                                                @click="project.selectedImage=image.id"
+                                                :data-bs-target="'#carouselExampleDark'+project.id"
+                                                :data-bs-slide-to="''+image.id"
+                                                :class="[project.selectedImage===image.id? 'active':'']"
+                                                aria-current="true" :aria-label="'Slide'+ (image.id+1)"
+                                                style="position: relative; bottom: -50px;"></button>
                                         </div>
+                                        <div class="carousel-inner ">
+                                            <div :class="['carousel-item', project.selectedImage===image.id? 'active':'']"
+                                                v-for="image in project.images" data-bs-interval="10000">
+                                                <img :src="''+image.imageUrl" class="d-block img-fluid m-auto"
+                                                    style="max-height: 360px;" alt="...">
+                                            </div>
+                                        </div>
+                                        <button class="carousel-control-prev" type="button"
+                                            :data-bs-target="'#carouselExampleDark'+project.id" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Previous</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button"
+                                            :data-bs-target="'#carouselExampleDark'+project.id" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Next</span>
+                                        </button>
                                     </div>
-                                    <button class="carousel-control-prev" type="button"
-                                        :data-bs-target="'#carouselExampleDark'+project.id" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Previous</span>
-                                    </button>
-                                    <button class="carousel-control-next" type="button"
-                                        :data-bs-target="'#carouselExampleDark'+project.id" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Next</span>
-                                    </button>
-                                </div>
-                                <br>
-                                <div class="row" v-if="project.url2 != null">
-                                    <div class="col-md-6">
+                                    <br>
+                                    <div class="row" v-if="project.url2 != null">
+                                        <div class="col-md-6">
+                                            <a :href="''+project.url" class="decor-none black">
+                                                <button type="button" class="mt-3 mb-3 btn btn-info active"
+                                                    style="width: 100%">
+                                                    {{project.name}}
+                                                </button>
+                                            </a>
+                                        </div>
+                                        <div class="col-md-6">
+
+                                            <a :href="''+project.url2" class="decor-none black">
+                                                <button type="button" class="mt-3 mb-3 btn btn-info active"
+                                                    style="width: 100%">
+                                                    {{project.name2}}
+                                                </button>
+                                            </a>
+                                        </div>
+
+                                    </div>
+                                    <div v-else>
                                         <a :href="''+project.url" class="decor-none black">
                                             <button type="button" class="mt-3 mb-3 btn btn-info active"
                                                 style="width: 100%">
@@ -282,118 +408,102 @@
                                             </button>
                                         </a>
                                     </div>
-                                    <div class="col-md-6">
 
-                                        <a :href="''+project.url2" class="decor-none black">
-                                            <button type="button" class="mt-3 mb-3 btn btn-info active"
-                                                style="width: 100%">
-                                                {{project.name2}}
-                                            </button>
-                                        </a>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-start">
+                                <h4 class="text-center">
+                                    {{project.title}}
+                                </h4>
+                                <br>
+                                <p><b>Role: </b>{{project.role}}</p>
+                                <b>Tasks:</b>
+                                <ul>
+                                    <li v-for="task in project.tasks">{{task}}</li>
+                                </ul>
+                            </div>
+                        </span>
+                    </div>
+                    <hr>
+                    <a :href="''+profile.githubUrl" class="decor-none">
+                        <button type="button" class="mt-3 mb-3 btn btn-info active" style="width: 100%">
+                            See also my Github profile here
+                        </button>
+                    </a>
+                </div>
+                <div v-else>
+                    <h1>Contact</h1>
+                    <hr>
+                    <div class="row text-start">
+                        <div class="col-md-8">
+                            <h5>I'd <b>love</b> to hear from you.</h5>
+                            <form action="mailto:mziyad195@gmail.com" method="post" enctype="text/plain">
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="inputName">Name</label>
+                                        <input id="inputName" name="name" type="text" class="form-control"
+                                            placeholder="Your name">
                                     </div>
-
+                                    <div class="col">
+                                        <label for="inputEmail">Email address</label>
+                                        <input id="inputEmail" name="email" type="email" class="form-control"
+                                            placeholder="Your email">
+                                    </div>
                                 </div>
-                                <div v-else>
-                                    <a :href="''+project.url" class="decor-none black">
-                                        <button type="button" class="mt-3 mb-3 btn btn-info active" style="width: 100%">
-                                            {{project.name}}
-                                        </button>
-                                    </a>
+                                <div class="form-group">
+                                    <label for="inputSubject">Subject</label>
+                                    <input id="inputSubject" name="subject" type="text" class="form-control"
+                                        placeholder="Your subject">
                                 </div>
-
-                            </div>
-                        </div>
-                        <div class="col-md-6 text-start">
-                            <h4 class="text-center">
-                                {{project.title}}
-                            </h4>
+                                <div class="form-group">
+                                    <label for="inputMessage">Message</label>
+                                    <textarea rows="6" name="message" id="inputMessage" type="text" class="form-control"
+                                        placeholder="Your Message"></textarea>
+                                </div>
+                                <br>
+                                <button type="submit" class="btn btn-info">Send</button>
+                            </form>
                             <br>
-                            <p><b>Role: </b>{{project.role}}</p>
-                            <b>Tasks:</b>
-                            <ul>
-                                <li v-for="task in project.tasks">{{task}}</li>
-                            </ul>
                         </div>
-                    </span>
-                </div>
-                <hr>
-                <a :href="''+profile.githubUrl" class="decor-none">
-                    <button type="button" class="mt-3 mb-3 btn btn-info active" style="width: 100%">
-                        See also my Github profile here
-                    </button>
-                </a>
-            </div>
-            <div v-else>
-                <h1>Contact</h1>
-                <hr>
-                <div class="row text-start">
-                    <div class="col-md-8">
-                        <h5>I'd <b>love</b> to hear from you.</h5>
-                        <form action="mailto:mziyad195@gmail.com" method="post" enctype="text/plain">
-                            <div class="row">
-                                <div class="col">
-                                    <label for="inputName">Name</label>
-                                    <input id="inputName" name="name" type="text" class="form-control"
-                                        placeholder="Your name">
-                                </div>
-                                <div class="col">
-                                    <label for="inputEmail">Email address</label>
-                                    <input id="inputEmail" name="email" type="email" class="form-control"
-                                        placeholder="Your email">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputSubject">Subject</label>
-                                <input id="inputSubject" name="subject" type="text" class="form-control"
-                                    placeholder="Your subject">
-                            </div>
-                            <div class="form-group">
-                                <label for="inputMessage">Message</label>
-                                <textarea rows="6" name="message" id="inputMessage" type="text" class="form-control"
-                                    placeholder="Your Message"></textarea>
-                            </div>
-                            <br>
-                            <button type="submit" class="btn btn-info">Send</button>
-                        </form>
-                        <br>
+                        <div class="col-md-4">
+                            <h6>Email</h6>
+                            <p><a class="decor-none" href="mailto:mziyad195@gmail.com">mziyad195@gmail.com</a></p>
+                            <hr>
+                            <h6>Phone</h6>
+                            <p><a class="decor-none" href="tel:+1123-456-7890">+6285889168150</a></p>
+                            <hr>
+                            <h6>Connect</h6>
+                            <a class="decor-none" target="_blank" :href="''+profile.linkedinUrl"><i
+                                    class="bi bi-linkedin"></i> Linkedin</a><br>
+                            <a class="decor-none" target="_blank" :href="''+profile.githubUrl"><i
+                                    class="bi bi-github"></i>
+                                Github</a><br>
+                            <a class="decor-none" target="_blank" :href="''+profile.mediumUrl"><i
+                                    class="bi bi-medium"></i>
+                                Medium</a>
+
+                            <hr>
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <h6>Email</h6>
-                        <p><a class="decor-none" href="mailto:mziyad195@gmail.com">mziyad195@gmail.com</a></p>
-                        <hr>
-                        <h6>Phone</h6>
-                        <p><a class="decor-none" href="tel:+1123-456-7890">+6285889168150</a></p>
-                        <hr>
-                        <h6>Connect</h6>
-                        <a class="decor-none" target="_blank" :href="''+profile.linkedinUrl"><i
-                                class="bi bi-linkedin"></i> Linkedin</a><br>
-                        <a class="decor-none" target="_blank" :href="''+profile.githubUrl"><i class="bi bi-github"></i>
-                            Github</a><br>
-                        <a class="decor-none" target="_blank" :href="''+profile.mediumUrl"><i class="bi bi-medium"></i>
-                            Medium</a>
 
-                        <hr>
-                    </div>
                 </div>
-
-            </div>
-        </Transition>
+            </Transition>
+        </div>
+        <div class="container">
+            <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+                <div class="col-md-4 d-flex align-items-center">
+                    <span class="text-muted">{{copyrightText}}</span>
+                </div>
+            </footer>
+        </div>
     </div>
-    <div class="container">
-        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-            <div class="col-md-4 d-flex align-items-center">
-                <span class="text-muted">{{copyrightText}}</span>
-            </div>
-        </footer>
-    </div>
-</div>
 
-<script>
+    <script>
 
-    const { createApp } = Vue
+        const { createApp } = Vue
 
-    createApp({
-        data() {
+        createApp({
+            data() {
             return {
                 type: 'Home',
                 projectType: 'Mobile',
@@ -411,10 +521,14 @@
                             company: 'The Ministry of Religious Affairs RI',
                             position: 'Expert Staff - Programmer',
                             description: [
-                                'Manage and develop an internal employee information system website for more than 400.000 employees using Laravel, Vue, and MSSQL.',
-                                'Integrate with Republic of Indonesia State Civil Service Agency for real-time updates.',
-                                'Develop API for employee information system using NestJS, MSSQL, and Kong.'
-                            ],
+                            'Manage, fix bugs, and develop features for an internal employee information system website to accommodate 400,000+ employees every day in The Ministry of Religious Affairs using Laravel, VueJS, Redis, and MSSQL.',
+                            'Integrate with the Republic of Indonesia State Civil Service Agency for real-time updates using REST API.',
+                            'Develop API for the employee information system using NestJS, MSSQL, and Kong.',
+                            'Develop a talent pool management website for promotion assessment using Laravel, VueJS, and MSSQL.',
+                            'Develop a mobile app for the employee information system using Flutter, and the backend using Golang and Nginx.',
+                            'Develop an admin page for changing employee data using Laravel, VueJS, and MSSQL.',
+                            'Develop an HR information system website using Laravel, VueJS, and PostgreSQL.'
+                        ],
                             year: 'May 2023 - Present',
                             location: 'Jakarta, Indonesia'
                         },
@@ -422,20 +536,21 @@
                             company: 'Bangkit Academy',
                             position: 'Mobile Development & Business/Commerce/Ideation Advisor',
                             description: [
-                                'Offer a time, knowledge, skills, and dedication to accelerate the student\'s project evolution',
-                                'Work with the student team(s) to create a strategic plan of action to help them overcome their challenges and achieve their goals'
-                            ],
-                            year: 'May 2024 - June 2024',
+                            'Offer time, knowledge, skills, and dedication to guide students’ capstone project as a Mobile Development & Business/Commerce/Ideation Advisor.',
+                            'Work with the student team(s) to create a strategic plan of action to help them overcome their challenges and achieve their goals.',
+                            'Provide a supportive learning environment that fosters a high student graduation rate of 93%.'
+                        ],
+                            year: 'May 2024 - December 2024',
                             location: 'Jakarta, Indonesia'
                         },
                         {
                             company: 'Bangkit Academy',
                             position: 'Mobile Development Learning Mentor',
                             description: [
-                                'Lead and assist a cohort of 25 students in a class from mobile development learning path',
-                                'Provide consultative support to study together and support each other',
-                                'Provide a supportive learning environment that will lead to a high graduation rate among students'
-                            ],
+                            'Lead and assist a cohort of 25 students in a class from mobile development learning path.',
+                            'Provide consultative support to study together and support each other.',
+                            'Provide a supportive learning environment that fosters a high student graduation rate of 91%.'
+                        ],
                             year: 'Feb 2023 - July 2023',
                             location: 'Jakarta, Indonesia'
                         },
@@ -821,11 +936,11 @@
                     },
                     {
                         id: 8,
-                        title: 'Cost Booking Website',
+                        title: 'Kos Booking Website',
                         role: 'Full-Stack Developer',
                         tasks: [
                             'Created and developed using following languages and technologies: HTML, CSS, Javascript, Bootstrap, PHP, and MySql.',
-                            "Developed to make a cost booking website for our brand new startup called 'Ruangkos'."
+                            "Developed to make a kos booking website for our brand new startup called 'Ruangkos'."
                         ],
                         images: [
                             {
@@ -1229,11 +1344,195 @@
                         url: 'https://apps.apple.com/id/app/ziary-goals-diary/id6502037426',
                         url2: 'https://play.google.com/store/apps/details?id=com.mziyadam.ziary&hl=en'
                     },
+                    {
+                        id: 22,
+                        title: 'A labyrinth game with special powers and enemies',
+                        role: 'Unity Developer',
+                        tasks: [
+                            'Created and developed using the following languages and technologies: Unity, C#, and Google Admob.',
+                            'Provides additional features such as special powers, sad quotes, and dynamic obstacles.',
+                            'Consists of a total of 21 levels across 4 stages, and an endless level mode.',
+                            'Has been published to App Store and Google Playstore.'
+                        ],
+                        images: [
+                            {
+                                id: 0,
+                                imageUrl: 'https://play-lh.googleusercontent.com/WHeYnoac7pZ0PC-QSPwz5Rx7zZueAYtyhZN9GrGgJ54XUUoYEigRx3CRTxoot58Ocr8=w1052-h592'
+                            },
+                            {
+                                id: 1,
+                                imageUrl: 'https://play-lh.googleusercontent.com/FxW-fzGyeKc3mMAQGa8fMCS2Ym3Ew3svCwzWlWrJRBX-9079vIp9LvZdXfAAttSqpn8=w1052-h592'
+                            },
+                            {
+                                id: 2,
+                                imageUrl: 'https://play-lh.googleusercontent.com/sXa7azC0ggYtl8ItFXPg5qWq6H5aOV9brx1P4m8Z3wdSKtHMRTchsBiSX9AzR-jDXx4=w1052-h592'
+                            },
+                            {
+                                id: 3,
+                                imageUrl: 'https://play-lh.googleusercontent.com/K-bs2wrJWZOp0Eyl7WV5DjvWEQV--3z35pMJBtSp1wzGKoeC2Y-naTqRsdi-KTOreAj1=w1052-h592'
+                            },
+                            {
+                                id: 4,
+                                imageUrl: 'https://play-lh.googleusercontent.com/x5-1L-RVzwnFNKenmgcVOgeTvbIpwVHgnAgB-9zfYjC33dVNfP2gzxKeJXIrYXm1tzk=w1052-h592'
+                            }
+                        ],
+                        selectedImage: 0,
+                        type: 'Game',
+                        name: 'Labyrinz: Run Away from You (App Store)',
+                        name2: 'Labyrinz: Run Away from You (Google Play)',
+                        url: 'https://apps.apple.com/id/app/labyrinz-run-away-from-you/id6670559231',
+                        url2: 'https://play.google.com/store/apps/details?id=com.mziyadam.labyrinz&hl=en'
+                    },
+                    {
+                        id: 23,
+                        title: 'A Classic Multiplayer Board Game: Snake and Ladder',
+                        role: 'Unity Developer',
+                        tasks: [
+                            'Created and developed using the following languages and technologies: Unity, C#, and Google Admob',
+                            'Provides additional features such as classic gameplay, offline multiplayer up to 6 players, and  100% random dice roll',
+                            'Consists of a level with dynamic board, snake, and ladder positions',
+                            'Has been published to App Store and Google Playstore'
+                        ],
+                        images: [
+                            {
+                                id: 0,
+                                imageUrl: 'https://play-lh.googleusercontent.com/vb7NOBiLrj17jurmwMgm96bd-Qjhgj2U7KlVOZ7sThnj3Xr3G_QKskLzDj1mQAwxJwg=w1052-h592'
+                            },
+                            {
+                                id: 1,
+                                imageUrl: 'https://play-lh.googleusercontent.com/BWdSHfSejp5-v9m9gp4pWFO7cvoVsEnekXipXQf9Nm4GIhx_1QxxXJbjNbqe_2URRg=w1052-h592'
+                            },
+                            {
+                                id: 2,
+                                imageUrl: 'https://play-lh.googleusercontent.com/BMg24s18kqONFOq0saH_NqeT_z3CGYMmK53nmIPoqaSdygFfz1wlOMRnKgsQOEy9nQ=w1052-h592'
+                            },
+                            {
+                                id: 3,
+                                imageUrl: 'https://play-lh.googleusercontent.com/q9PDWeHmQcUzaDmBU8FeH8POs7y5irlIMbpPv12QPZbNZSJ_jJAKUVJ4qEW3G1ifuf0=w1052-h592'
+                            }
+                        ],
+                        selectedImage: 0,
+                        type: 'Game',
+                        name: 'Snake & Ladderz (App Store)',
+                        name2: 'Snake & Ladderz (Google Play)',
+                        url: 'https://apps.apple.com/id/app/snake-and-ladderz/id6702013608',
+                        url2: 'https://play.google.com/store/apps/details?id=com.mziyadam.SnakeLadderz'
+                    },
+                    {
+                        id: 24,
+                        title: 'A 3D version of classic puzzle game Sokoban',
+                        role: 'Unity Developer',
+                        tasks: [
+                            'Created and developed using the following languages and technologies: Unity, C#, and Google Admob.',
+                            'Provides additional features such as buy and select characters, undo feature, shop, and skip level option.',
+                            'Consists of a total of 1055 levels across 18 collections.',
+                            'Has been published to App Store and Google Playstore.'
+                        ],
+                        images: [
+                            {
+                                id: 0,
+                                imageUrl: 'https://play-lh.googleusercontent.com/diDr_MEFrhG5MX-mqDsErBrPAXkDflOQStpOIAI7voSHgypgRuqSPKEdF9iQTHqXog=w1052-h592'
+                            },
+                            {
+                                id: 1,
+                                imageUrl: 'https://play-lh.googleusercontent.com/riva685lyJWmqeH2L_El4o468u7uzEe-ng5n8Z0LYpAXY9WHnPbuk-R-Wp7qUZPeHC0=w1052-h592'
+                            },
+                            {
+                                id: 2,
+                                imageUrl: 'https://play-lh.googleusercontent.com/_XrgdvwhY02DxHJzRZqJQF2RefInvJpqKGfil0NrG79LzqnJdjzJ9acNJ-IetvDYKw=w1052-h592'
+                            },
+                            {
+                                id: 3,
+                                imageUrl: 'https://play-lh.googleusercontent.com/oqn5p_Eos8mhIb95R9jki3rjjO8KQScH2fUeIp-UNMTtv1qhDiVUtFImPwDWgxDSMFQ=w1052-h592'
+                            },
+                            {
+                                id: 4,
+                                imageUrl: 'https://play-lh.googleusercontent.com/tnh5abMJ0PqmpBDFufd7CHqD06dMxNzwosTF5I5gA11PHoh5milJbFBkfdKKppRRYg=w1052-h592'
+                            }
+                        ],
+                        selectedImage: 0,
+                        type: 'Game',
+                        name: 'Sokobanz: 3D Push the Box (App Store)',
+                        name2: 'Sokobanz: 3D Push the Box (Google Play)',
+                        url: 'https://apps.apple.com/id/app/sokobanz-3d-push-the-box/id6736657074',
+                        url2: 'https://play.google.com/store/apps/details?id=com.mziyadam.Sokobanz&hl=en'
+                    },
+                    {
+                        id: 25,
+                        title: 'A trivia quiz game about popular meme sticker',
+                        role: 'Flutter Developer',
+                        tasks: [
+                            'Created and developed using the following languages and technologies: Flutter, Dart, Google Admob, and In-App Purchase.',
+                            'Provides additional features such as skip question, shop, and add stickers to WhatsApp.',
+                            'Consists of a total of 170 stickers across 12 levels.',
+                            'Has been published to Google Playstore.'
+                        ],
+                        images: [
+                            {
+                                id: 0,
+                                imageUrl: 'https://play-lh.googleusercontent.com/zIHm1_D1JMJSDRE2cLj1M0oEaWUTTdvsLn_WI5QLKz0TAMwRaJS2ackVgQb0PF0REQ=w1052-h592'
+                            },
+                            {
+                                id: 1,
+                                imageUrl: 'https://play-lh.googleusercontent.com/fAL49ibcguy00vr6OewCV52W8zLMEj7lPA1oX55dwEirnkWW8yL_7sDBNcKykH3uF3s=w1052-h592'
+                            },
+                            {
+                                id: 2,
+                                imageUrl: 'https://play-lh.googleusercontent.com/6JHHoU2Nw2dIPwh86ZJlhP-7Zhl_7-j_4bHBpOWAIzrhGe4cO9fwLvlw9x3sbISkOR0=w1052-h592'
+                            }
+                        ],
+                        selectedImage: 0,
+                        type: 'Game',
+                        name: 'Tebak Stiker (Google Play)',
+                        url: 'https://play.google.com/store/apps/details?id=com.mziyadam.tebakstiker&hl=en'
+                    },
                 ],
                 copyrightText: 'Muhammad Ziyad Al Maududi - 2022',
             }
         }
     }).mount('#app')
-</script>
+    </script>
+
+    <p id="load">Firebase SDK Loading&hellip;</p>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const loadEl = document.querySelector('#load');
+            // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+            // // The Firebase SDK is initialized and available here!
+            //
+            // firebase.auth().onAuthStateChanged(user => { });
+            // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
+            // firebase.firestore().doc('/foo/bar').get().then(() => { });
+            // firebase.functions().httpsCallable('yourFunction')().then(() => { });
+            // firebase.messaging().requestPermission().then(() => { });
+            // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
+            // firebase.analytics(); // call to activate
+            // firebase.analytics().logEvent('tutorial_completed');
+            // firebase.performance(); // call to activate
+            //
+            // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+            try {
+                let app = firebase.app();
+                let features = [
+                    'auth',
+                    'database',
+                    'firestore',
+                    'functions',
+                    'messaging',
+                    'storage',
+                    'analytics',
+                    'remoteConfig',
+                    'performance',
+                ].filter(feature => typeof app[feature] === 'function');
+                loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
+            } catch (e) {
+                console.error(e);
+                loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
+            }
+        });
+    </script>
+</body>
 
 </html>
