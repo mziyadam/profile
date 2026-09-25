@@ -107,6 +107,14 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8720658881637782"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <!-- 1. Include JS Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- 2. Attach GoogleGenAI to window via ESM script -->
+    <script type="module">
+        import { GoogleGenAI } from 'https://esm.sh/@google/genai';
+        window.GoogleGenAI = GoogleGenAI;
+    </script>
     <style>
         @font-face {
             font-family: Inter;
@@ -206,6 +214,10 @@
                                 href="#">Projects</a>
                         </li>
                         <li class="nav-item">
+                            <a @click="type='GenerateCV'" :class="['nav-link',type==='GenerateCV'? 'active':'']"
+                                href="#">Generate CV</a>
+                        </li>
+                        <li class="nav-item">
                             <a @click="type='Contact'" :class="['nav-link',type==='Contact'? 'active':'']"
                                 href="#">Contact</a>
                         </li>
@@ -238,24 +250,19 @@
                     <h5 class="semi-bold">with many projects and years of experience</h5>
                     <br>
                     <div class="text-center">
-                        <a target="_blank"
-                            href="https://www.credential.net/a1d1a491-fd7d-42aa-a469-acb10b904d7c#gs.dfgnvy">
-                            <img class="img-fluid m-2" style="vertical-align: top;"
-                                src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/56243794"
-                                alt="">
-                        </a>
+                        <template v-for="(cert, index) in profile.certifications" :key="index">
+                            <!-- Accredible / Image-based Badges -->
+                            <a v-if="cert.badgeImg" :href="cert.credentialUrl" target="_blank" class="d-inline-block">
+                                <img class="img-fluid m-2" style="vertical-align: top; max-height: 120px;"
+                                    :src="cert.badgeImg" :alt="cert.title">
+                            </a>
 
-                        <div data-iframe-width="150" data-iframe-height="270"
-                            data-share-badge-id="223f711e-883d-48f2-8d23-de78d657b186"
-                            data-share-badge-host="https://www.credly.com"></div>
-
-                        <script type="text/javascript" src="//cdn.credly.com/assets/utilities/embed.js"></script>
-
-                        <a target="_blank" href="https://www.credential.net/40eb13d2-011c-4f2a-98b3-1fe86d610cdb">
-                            <img class="img-fluid m-2" style="vertical-align: top;"
-                                src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/121829764"
-                                alt="">
-                        </a>
+                            <!-- Credly Widget Badges -->
+                            <div v-else-if="cert.badgeId" class="d-inline-block m-2" data-iframe-width="150"
+                                data-iframe-height="270" :data-share-badge-id="cert.badgeId"
+                                data-share-badge-host="https://www.credly.com">
+                            </div>
+                        </template>
                     </div>
                     <hr>
                     <h3>Tech Stacks <a href="#" style="text-decoration: none;" class="semi-light"
@@ -445,6 +452,83 @@
                         </button>
                     </a>
                 </div>
+                <div v-else-if="type === 'GenerateCV'">
+                    <h1>Build CV with Gemini AI</h1>
+                    <p>Paste the complete job posting or requirements below. Gemini will extract the role, analyze your
+                        profile data, and generate a PDF resume.</p>
+                    <hr>
+                    <div class="row text-start">
+                        <div class="col-md-8 offset-md-2">
+
+                            <!-- API Key Input Section -->
+                            <div class="card p-3 mb-4 bg-light">
+                                <!-- Gemini API Key Field -->
+                                <div class="mb-3">
+                                    <label for="apiKey" class="form-label fw-bold">Gemini API Key</label>
+                                    <div class="input-group">
+                                        <input v-model="userApiKey" type="password" class="form-control" id="apiKey"
+                                            placeholder="AIzaSy...">
+                                        <button @click="saveApiKey" class="btn btn-outline-secondary" type="button">Save
+                                            Key</button>
+                                        <button @click="clearApiKey" class="btn btn-outline-danger"
+                                            type="button">Clear</button>
+                                    </div>
+                                    <small class="text-muted mt-1 d-block" v-if="hasSavedKey">
+                                        <i class="bi bi-check-circle-fill text-success"></i> Key saved in browser
+                                        storage.
+                                    </small>
+                                </div>
+
+                                <!-- Access Passcode Field -->
+                                <div>
+                                    <label for="accessPasscode" class="form-label fw-bold">Access Passcode (First
+                                        Phone)</label>
+                                    <div class="input-group">
+                                        <input v-model="userPasscode" type="password" class="form-control"
+                                            id="accessPasscode" placeholder="Enter private passcode">
+                                        <button @click="savePasscode" class="btn btn-outline-secondary"
+                                            type="button">Verify & Save</button>
+                                        <button @click="clearPasscode" class="btn btn-outline-danger"
+                                            type="button">Clear</button>
+                                    </div>
+                                    <small class="mt-1 d-block" v-if="hasSavedPasscode">
+                                        <span v-if="isAuthed" class="text-success">
+                                            <i class="bi bi-shield-check"></i> Authenticated & Unlocked
+                                        </span>
+                                        <span v-else class="text-danger">
+                                            <i class="bi bi-exclamation-triangle-fill"></i> Incorrect passcode. AI
+                                            features locked.
+                                        </span>
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!-- Single Input Field -->
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <label for="targetPosting" class="form-label fw-bold mb-0">Job Posting /
+                                        Requirements</label>
+                                    <button v-if="cvForm.requirements" @click="clearRequirements" type="button"
+                                        class="btn btn-sm btn-link text-danger text-decoration-none p-0">
+                                        <i class="bi bi-trash"></i> Clear Text
+                                    </button>
+                                </div>
+                                <textarea v-model="cvForm.requirements" @input="saveRequirements" class="form-control"
+                                    id="targetPosting" rows="10"
+                                    placeholder="Paste the job title, requirements, or full job posting here...">
+    </textarea>
+                            </div>
+
+                            <button @click="generateCVWithGemini" :disabled="isGeneratingCV"
+                                class="btn btn-info text-white fw-bold w-100">
+                                <span v-if="isGeneratingCV" class="spinner-border spinner-border-sm me-2"
+                                    role="status"></span>
+                                {{ isGeneratingCV ? 'Generating PDF...' : 'Generate CV (PDF)' }}
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
                 <div v-else>
                     <h1>Contact</h1>
                     <hr>
@@ -517,6 +601,400 @@
         const { createApp } = Vue
 
         createApp({
+            computed: {
+                hasSavedKey() {
+                    return !!this.userApiKey && localStorage.getItem('gemini_api_key') === this.userApiKey;
+                }
+            },
+            methods: {
+                saveApiKey() {
+                    if (!this.userApiKey) {
+                        alert('Please enter a valid API key first.');
+                        return;
+                    }
+                    localStorage.setItem('gemini_api_key', this.userApiKey.trim());
+                    alert('API key saved locally!');
+                },
+
+                clearApiKey() {
+                    localStorage.removeItem('gemini_api_key');
+                    this.userApiKey = '';
+                    alert('API key removed from local storage.');
+                },
+
+                async generateCVWithGemini() {
+                    if (!this.isAuthed) {
+                        alert('Access Denied: Please enter the correct access passcode to generate CVs.');
+                        return;
+                    }
+                    if (!this.userApiKey) {
+                        alert('Please enter and save a valid Gemini API Key first.');
+                        return;
+                    }
+                    const apiKey = (this.userApiKey || '').trim() || localStorage.getItem('gemini_api_key') || '';
+
+                    if (!apiKey) {
+                        alert('Please enter and save your Gemini API key first.');
+                        return;
+                    }
+
+                    if (!this.cvForm || !this.cvForm.requirements || !this.cvForm.requirements.trim()) {
+                        alert('Please paste the job requirements or posting.');
+                        return;
+                    }
+
+                    this.isGeneratingCV = true;
+
+                    try {
+                        const GoogleGenAI = window.GoogleGenAI;
+                        if (!GoogleGenAI) {
+                            throw new Error("GoogleGenAI SDK is still loading. Please try again in a few seconds.");
+                        }
+
+                        const ai = new GoogleGenAI({ apiKey: apiKey });
+
+                        const portfolioData = {
+                            profile: {
+                                name: this.profile.name,
+                                bio: this.profile.bio,
+                                email: this.profile.email,
+                                phoneNumber: this.profile.phoneNumber,
+                                workExperience: this.profile.workExperience,
+                                educations: this.profile.educations,
+                                certifications: this.profile.certifications, // <--- Add certifications payload
+                                achievements: this.profile.achievements,
+                                githubUrl: this.profile.githubUrl,
+                                linkedinUrl: this.profile.linkedinUrl
+                            },
+                            areasOfInterest: this.areasOfInterest,
+                            projects: this.projects
+                        };
+
+                        const prompt = `
+You are an expert ATS resume writer. Analyze the provided Job Posting/Requirements and candidate portfolio data.
+
+Candidate Portfolio Data:
+${JSON.stringify(portfolioData)}
+
+Target Job Posting / Requirements:
+${this.cvForm.requirements}
+
+Instructions:
+1. Extract target job title/role from the job posting text.
+2. Write a 2-3 sentence tailored professional summary.
+3. Group technical skills into 4-6 concise categories for an ATS layout.
+4. Work Experience Selection (Select 2-3 most relevant entries):
+   - For Mobile / Android / Flutter roles: Prioritize 'The Ministry of Religious Affairs RI', 'Bangkit Academy', and 'Freelance & Solo Developer' (to highlight App Store/Play Store deployments, monetization via IAP/Ads, and international client work).
+   - For Full-Stack / Web / Backend roles: Prioritize 'The Ministry of Religious Affairs RI', 'Ruangkos' (CTO), and 'Freelance & Solo Developer' (to highlight full-stack web delivery, database architecture, REST APIs, and client systems).
+   - For Advisory / Leadership / DevRel roles: Prioritize 'The Ministry of Religious Affairs RI', 'Bangkit Academy', 'Coding Camp powered by DBS Foundation', or 'Pusat Industri Digital Indonesia 4.0 (PIDI 4.0)'.
+5. Dynamic Project Selection (Select EXACTLY 2 projects):
+   - IF the job posting mentions Flutter, Cross-Platform, Hardware/IoT, Bluetooth, Wireless, Embedded, or Global/US Clients:
+     --> Prioritize selecting "Offline LoRa Messaging & IoT Integration Platform" (Flutter/IoT) as one of the 2 projects.
+   - IF the job posting is strictly Native Android (Kotlin/Java):
+     --> Prioritize Native Android apps (e.g., Calistung, zradio).
+   - IF the job posting is Full-Stack / Backend / Web:
+     --> Select 1 high-impact Web/Backend project and 1 Mobile/IoT project to show full-stack breadth.
+6. Education: Include Universitas Brawijaya (GPA 3.91/4.00) and Bangkit Academy Distinction details if relevant.
+7. Achievements & Certifications: Include 2-4 entries (e.g. Google Associate Android Developer, Unity Certified, Technifest 2nd Place).
+
+Return JSON matching this exact schema:
+{
+  "extractedRole": "string",
+  "summary": "string",
+  "skills": [ { "label": "string", "val": "string" } ],
+  "experiences": [
+    { "company": "string", "position": "string", "year": "string", "location": "string", "bullets": ["string"] }
+  ],
+  "projects": [
+    { "title": "string", "year": "string", "bullets": ["string"] }
+  ],
+  "education": [
+    { "institution": "string", "degree": "string", "gpa": "string", "details": "string", "year": "string", "location": "string" }
+  ],
+  "achievementsAndCerts": [
+    "string"
+  ]
+}
+`;
+                        // Fallback model chain
+                        const candidateModels = ['gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-3.5-flash-lite'];
+                        let response = null;
+                        let lastError = null;
+
+                        for (const modelName of candidateModels) {
+                            try {
+                                response = await ai.models.generateContent({
+                                    model: modelName,
+                                    contents: prompt,
+                                    config: {
+                                        responseMimeType: 'application/json'
+                                    }
+                                });
+                                if (response && response.text) break;
+                            } catch (err) {
+                                lastError = err;
+                                if (err.message && (err.message.includes('503') || err.message.includes('high demand') || err.message.includes('404'))) {
+                                    await new Promise(resolve => setTimeout(resolve, 1500));
+                                } else {
+                                    throw err;
+                                }
+                            }
+                        }
+
+                        if (!response) {
+                            throw lastError || new Error("Models are currently under high load. Please try again.");
+                        }
+
+                        const parsedCV = JSON.parse(response.text);
+                        this.buildPDF(parsedCV);
+
+                    } catch (error) {
+                        console.error("CV Generation Error:", error);
+                        alert("Error generating CV: " + (error.message || error));
+                    } finally {
+                        this.isGeneratingCV = false;
+                    }
+                }, buildPDF(cvData) {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF({
+                        unit: 'pt',
+                        format: 'letter'
+                    });
+
+                    // --- Page & Margin Configurations (Optimized for 1 Page) ---
+                    const margin = 36; // 0.5 inch margins
+                    const pageWidth = doc.internal.pageSize.getWidth();
+                    const contentWidth = pageWidth - (margin * 2);
+                    let y = 36;
+
+                    // --- Helper: Section Header Drawer ---
+                    const addSectionHeader = (title) => {
+                        doc.setFont("times", "bold");
+                        doc.setFontSize(10.5);
+                        doc.text(title.toUpperCase(), margin, y);
+                        y += 3;
+
+                        doc.setLineWidth(0.6);
+                        doc.setDrawColor(0);
+                        doc.line(margin, y, margin + contentWidth, y);
+                        y += 9;
+                    };
+
+                    // --- Helper: Bullet List Drawer ---
+                    const addBullets = (bullets) => {
+                        doc.setFont("times", "normal");
+                        doc.setFontSize(8.5);
+                        (bullets || []).forEach(bullet => {
+                            const wrapped = doc.splitTextToSize(bullet, contentWidth - 10);
+                            doc.text('•', margin + 2, y);
+                            doc.text(wrapped, margin + 10, y, { lineHeightFactor: 1.1 });
+                            y += (wrapped.length * 9.5) + 0.5;
+                        });
+                    };
+
+                    // --- 1. HEADER (Centered Name & Contact Details) ---
+                    doc.setFont("times", "bold");
+                    doc.setFontSize(18);
+                    const candidateName = this.profile?.name || 'Muhammad Ziyad Al Maududi';
+                    doc.text(candidateName, pageWidth / 2, y, { align: 'center' });
+                    y += 13;
+
+                    doc.setFont("times", "normal");
+                    doc.setFontSize(8.5);
+
+                    const contactParts = [
+                        "Jakarta, Indonesia",
+                        this.profile?.phoneNumber || '+6285889168150',
+                        this.profile?.email || 'mziyad195@gmail.com',
+                        "m-ziyad-am.web.app",
+                        "linkedin.com/in/mziyadam",
+                        "github.com/mziyadam"
+                    ];
+
+                    // Draw single centered header line
+                    doc.text(contactParts.join('  |  '), pageWidth / 2, y, { align: 'center' });
+                    y += 15; // Gap before Professional Summary
+
+                    // --- 2. PROFESSIONAL SUMMARY ---
+                    if (cvData.summary) {
+                        doc.setFont("times", "normal");
+                        doc.setFontSize(8.5);
+                        const summaryLines = doc.splitTextToSize(cvData.summary, contentWidth);
+                        doc.text(summaryLines, margin, y, { lineHeightFactor: 1.15 });
+                        y += (summaryLines.length * 10) + 6;
+                    }
+
+                    // --- 3. SKILLS (Full-Width Categorized ATS Layout - Saves ~20pt vertical space) ---
+                    if (cvData.skills && cvData.skills.length > 0) {
+                        addSectionHeader("SKILLS");
+
+                        doc.setFontSize(8.5);
+                        cvData.skills.forEach(skill => {
+                            const labelText = `${skill.label}: `;
+
+                            doc.setFont("times", "bold");
+                            doc.text(labelText, margin, y);
+
+                            const labelWidth = doc.getTextWidth(labelText);
+                            doc.setFont("times", "normal");
+
+                            const valLines = doc.splitTextToSize(skill.val, contentWidth - labelWidth);
+                            doc.text(valLines, margin + labelWidth, y, { lineHeightFactor: 1.1 });
+
+                            y += (valLines.length * 9.5) + 0.5;
+                        });
+                        y += 4;
+                    }
+
+                    // --- 4. PROFESSIONAL EXPERIENCE ---
+                    if (cvData.experiences && cvData.experiences.length > 0) {
+                        addSectionHeader("PROFESSIONAL EXPERIENCE");
+
+                        cvData.experiences.forEach(exp => {
+                            doc.setFont("times", "bold");
+                            doc.setFontSize(9.5);
+                            doc.text(exp.position || 'Software Developer', margin, y);
+                            doc.text(exp.year || '', margin + contentWidth, y, { align: 'right' });
+                            y += 10;
+
+                            doc.setFont("times", "italic");
+                            doc.setFontSize(8.5);
+                            doc.text(exp.company || '', margin, y);
+                            if (exp.location) {
+                                doc.text(exp.location, margin + contentWidth, y, { align: 'right' });
+                            }
+                            y += 10;
+
+                            addBullets(exp.bullets);
+                            y += 3;
+                        });
+                    }
+
+                    // --- 5. PROJECTS ---
+                    if (cvData.projects && cvData.projects.length > 0) {
+                        addSectionHeader("PROJECTS");
+
+                        cvData.projects.forEach(proj => {
+                            doc.setFont("times", "bold");
+                            doc.setFontSize(9.5);
+                            doc.text(proj.title || '', margin, y);
+                            if (proj.year) {
+                                doc.text(proj.year, margin + contentWidth, y, { align: 'right' });
+                            }
+                            y += 10;
+
+                            addBullets(proj.bullets || proj.tasks);
+                            y += 3;
+                        });
+                    }
+
+                    // --- 6. EDUCATION ---
+                    // --- 6. EDUCATION SECTION LOGIC ---
+                    addSectionHeader("EDUCATION");
+
+                    const eduList = (cvData.education && cvData.education.length > 0)
+                        ? cvData.education
+                        : [
+                            {
+                                institution: 'Universitas Brawijaya',
+                                degree: 'Bachelor in Informatics Engineering',
+                                gpa: '3.91 / 4.00',
+                                details: 'Specialization in Media, Game, and Mobile Technology',
+                                year: 'Aug 2019 - Dec 2022',
+                                location: 'Malang, Indonesia'
+                            }
+                        ];
+
+                    eduList.forEach(edu => {
+                        // Line 1: Institution & Dates
+                        doc.setFont("times", "bold");
+                        doc.setFontSize(9.5);
+                        doc.text(edu.institution || 'Universitas Brawijaya', margin, y);
+                        doc.text(edu.year || 'Aug 2019 - Dec 2022', margin + contentWidth, y, { align: 'right' });
+                        y += 10;
+
+                        // Line 2: Degree & Location
+                        doc.setFont("times", "italic");
+                        doc.setFontSize(8.5);
+                        const degreeTitle = edu.degree || 'Bachelor in Informatics Engineering';
+                        doc.text(degreeTitle, margin, y);
+                        doc.text(edu.location || 'Malang, Indonesia', margin + contentWidth, y, { align: 'right' });
+                        y += 10;
+
+                        // Line 3: Details Line (Hides 'GPA: N/A' while keeping specialization details)
+                        doc.setFont("times", "normal");
+                        doc.setFontSize(8.5);
+
+                        const rawGpa = (edu.gpa || '').toString().trim();
+                        const hasValidGpa = rawGpa && !rawGpa.toUpperCase().includes('N/A');
+                        const detailsText = edu.details || 'Specialization in Media, Game, and Mobile Technology';
+
+                        // Construct line: includes GPA only if valid, otherwise shows just the details
+                        const fullEduLine = hasValidGpa ? `GPA: ${rawGpa}  |  ${detailsText}` : detailsText;
+
+                        const wrappedDetails = doc.splitTextToSize(fullEduLine, contentWidth);
+                        doc.text(wrappedDetails, margin, y);
+                        y += (wrappedDetails.length * 9) + 4;
+                    });
+                    // --- 7. ACHIEVEMENTS & CERTIFICATIONS ---
+                    addSectionHeader("ACHIEVEMENTS & CERTIFICATIONS");
+
+                    // Condense achievements into compact combined lines
+                    const certsList = (cvData.achievementsAndCerts && cvData.achievementsAndCerts.length > 0)
+                        ? cvData.achievementsAndCerts
+                        : [
+                            "Google Associate Android Developer (2022)  |  Google Play Store Listing Certificate (2024)",
+                            "2nd Place Winner - Technifest UNJ National Mobile Competition (2022)  |  Unity Certified Associate (2024)"
+                        ];
+                    addBullets(certsList);
+
+                    // --- Save & Preview PDF ---
+                    const roleString = (cvData.extractedRole || 'Full_Stack_Developer').replace(/[^a-zA-Z0-9]/g, '_');
+                    const pdfBlobUrl = doc.output('bloburl');
+                    console.log('PDF Preview URL:', pdfBlobUrl);
+                    window.open(pdfBlobUrl, '_blank');
+                },
+                verifyPasscode() {
+                    if (this.userPasscode === this.SECRET_PASSCODE) {
+                        this.isAuthed = true;
+                    } else {
+                        this.isAuthed = false;
+                    }
+                },
+                savePasscode() {
+                    if (!this.userPasscode) return;
+                    localStorage.setItem('gemini_passcode', this.userPasscode);
+                    this.hasSavedPasscode = true;
+                    this.verifyPasscode();
+                },
+                clearPasscode() {
+                    this.userPasscode = '';
+                    this.isAuthed = false;
+                    this.hasSavedPasscode = false;
+                    localStorage.removeItem('gemini_passcode');
+                },
+                saveRequirements() {
+                    localStorage.setItem('gemini_job_requirements', this.cvForm.requirements);
+                },
+
+                // Clears both the textarea and localStorage key
+                clearRequirements() {
+                    this.cvForm.requirements = '';
+                    localStorage.removeItem('gemini_job_requirements');
+                },
+            },
+            mounted() {
+                this.verifyPasscode();
+                // Force Credly script to parse and embed badges after Vue renders the DOM
+                if (window.Credly && typeof window.Credly.build === 'function') {
+                    window.Credly.build();
+                } else {
+                    const script = document.createElement('script');
+                    script.src = '//cdn.credly.com/assets/utilities/embed.js';
+                    script.async = true;
+                    document.body.appendChild(script);
+                }
+            },
             data() {
                 return {
                     type: 'Home',
@@ -524,6 +1002,21 @@
                     activeColor: 'red',
                     fontSize: 30,
                     message: 'Hello Vue!',
+                    //
+                    SECRET_PASSCODE: 'Lenovo A1000', // Change to your preferred passcode
+
+                    userApiKey: localStorage.getItem('gemini_api_key') || '',
+                    userPasscode: localStorage.getItem('gemini_passcode') || '',
+                    hasSavedKey: !!localStorage.getItem('gemini_api_key'),
+                    hasSavedPasscode: !!localStorage.getItem('gemini_passcode'),
+                    isAuthed: false,
+                    //
+                    cvForm: {
+                        // Load saved text from localStorage on startup, fallback to empty string
+                        requirements: localStorage.getItem('gemini_job_requirements') || '',
+                        // ... other cvForm fields
+                    },
+                    isGeneratingCV: false,
                     profile: {
                         username: '\@mziyadam',
                         name: 'Muhammad Ziyad Al Maududi',
@@ -544,9 +1037,20 @@
                                     'Developed an ICT management information system from scratch, including authentication and authorization features, 2FA, and master data and ICT asset data management using ReactJS, PostgreSQL, Go, and Gitlab CI/CD.',
                                     'Developed a one-stop integrated service to shorten the process of citizens\' religious administration across the country using NextJS, MySQL, Docker, ExpressJS, and Gitlab CI/CD.',
                                     'Developed eoffice website having account management, schedule, e-signature, letter, and disposition using ReactJS, PostgreSQL, Docker, and Go. Developed the mobile version using Flutter.'
-
                                 ],
                                 year: 'May 2023 - Present',
+                                location: 'Jakarta, Indonesia'
+                            },
+                            {
+                                company: 'Freelance & Solo Developer',
+                                position: 'Mobile & Software Engineer',
+                                description: [
+                                    'Delivered 20+ custom cross-platform applications, games, and web systems for international clients across the US, Romania, Australia, and healthcare sectors.',
+                                    'Engineered, published, and maintained mobile apps on Google Play Store and Apple App Store built with Flutter, Android Kotlin, and Unity.',
+                                    'Implemented mobile app monetization strategies including In-App Purchases (IAP), Google AdMob, and paid app models.',
+                                    'Architected specialized hardware-integrated applications, including DigiWrist Mobile Wireless using LoRa radio signals and ESP32 microcontrollers.'
+                                ],
+                                year: 'Dec 2021 - Present',
                                 location: 'Jakarta, Indonesia'
                             },
                             {
@@ -671,6 +1175,13 @@
                                 location: 'Malang, Indonesia'
                             }
                         ],
+                        achievements: [
+                            {
+                                title: '2nd Place National Mobile App Competition',
+                                event: 'Technifest UNJ 2022',
+                                description: 'Developed FiveFeat, a street vendor ordering & queuing app using Kotlin, MVVM, CI/CD, and Firebase.'
+                            }
+                        ],
                         educations: [
                             {
                                 name: 'Universitas Brawijaya',
@@ -683,9 +1194,12 @@
                                 icon: 'unity.png',
                             },
                             {
-                                name: 'Bangkit Academy 2022',
-                                description: "Bangkit is a unique career readiness program in technology led by Google. I'am a one of few distinction graduates of the Mobile Development learning path.",
+                                name: 'Bangkit Academy led by Google, GoTo, Traveloka',
+                                degree: 'Mobile Development Learning Path',
+                                year: 'Feb 2022 - Jul 2022',
+                                location: 'Indonesia',
                                 icon: 'bangkit-academy.jpg',
+                                description: 'Graduated with Distinction (Top 10% of 3,000+ students). Built Calistung Capstone App.'
                             },
                             {
                                 name: 'IDCamp 2022',
@@ -693,6 +1207,30 @@
                                 icon: 'idcamp-circle.png',
                             },
 
+                        ],
+                        certifications: [
+                            {
+                                title: 'Google Associate Android Developer',
+                                issuer: 'Google',
+                                year: '2022',
+                                badgeImg: 'https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/56243794',
+                                credentialUrl: 'https://www.credential.net/a1d1a491-fd7d-42aa-a469-acb10b904d7c#gs.dfgnvy'
+                            },
+                            {
+                                title: 'Unity Certified Associate: Game Developer',
+                                issuer: 'Unity',
+                                year: '2024',
+                                badgeId: '223f711e-883d-48f2-8d23-de78d657b186',
+                                badgeImg: 'https://images.credly.com/size/680x680/images/99becefb-f627-413c-8ad3-b52534e50037/image.png',
+                                credentialUrl: 'https://www.credly.com/badges/223f711e-883d-48f2-8d23-de78d657b186'
+                            },
+                            {
+                                title: 'Google Play Store Listing Certificate',
+                                issuer: 'Google',
+                                year: '2024',
+                                badgeImg: 'https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/121829764',
+                                credentialUrl: 'https://www.credential.net/40eb13d2-011c-4f2a-98b3-1fe86d610cdb'
+                            }
                         ],
                         githubUrl: 'https://github.com/mziyadam',
                         linkedinUrl: 'https://www.linkedin.com/in/mziyadam',
