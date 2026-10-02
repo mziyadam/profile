@@ -271,7 +271,7 @@
                     <p>Take a look at some of the things I'm interested and used in</p>
                     <div class="row">
                         <div class="col-md-4" v-for="item in areasOfInterest">
-                            <img class="img-fluid limit-logo-size p-4" v-bind:src="'../icon/'+item.icon" alt="">
+                            <img class="img-fluid limit-logo-size p-4" :src="'icon/'+item.icon" alt="">
                             <h5>{{item.name}}</h5>
                             <p>{{item.skills}}</p>
                         </div>
@@ -337,7 +337,7 @@
                     <h3>Education</h3>
                     <div class="row">
                         <div class="col-md-6" v-for="item in profile.educations">
-                            <img class="img-fluid limit-logo-size-bigger p-4" v-bind:src="'../icon/'+item.icon" alt="">
+                            <img class="img-fluid limit-logo-size-bigger p-4" :src="'icon/'+item.icon" alt="">
                             <h5>{{item.name}}</h5>
                             <p>{{item.description}}</p>
                         </div>
